@@ -1,0 +1,26 @@
+
+.signup-content .account-login-intro {
+  max-width: 680px;
+}
+
+.signup-content .account-login-card {
+  min-height: 265px;
+}
+
+.signup-content .account-login-signup {
+  margin-top: 32px;
+}
+
+.signup-content .account-login-trust {
+  margin-top: 37px;
+}
+
+@media (max-width: 700px) {
+  .signup-content {
+    padding-top: 52px;
+  }
+
+  .signup-content .account-login-card {
+    min-height: 250px;
+  }
+}

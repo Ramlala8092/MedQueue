@@ -1,0 +1,1429 @@
+/* HOW IT WORKS PAGE */
+
+.work-page {
+    width: 100%;
+    min-height: 100vh;
+    background: #ffffff;
+    overflow: hidden;
+}
+
+.work-page main {
+    width: 100%;
+}
+
+
+/* ==============================
+   HOW IT WORKS HERO SECTION
+================================ */
+
+.work-hero {
+    position: relative;
+    width: 100%;
+    min-height: 760px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+
+    background-image: url("/image/service1.jpg");
+    background-size: cover;
+    background-position: center 35%;
+    background-repeat: no-repeat;
+}
+
+/* DARK OVERLAY */
+
+.work-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(5, 18, 12, 0.55);
+    z-index: 1;
+}
+
+/* HERO CONTENT */
+
+.work-hero-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 1200px;
+    padding: 50px 25px 100px;
+    text-align: center;
+    color: #ffffff;
+}
+
+/* SMALL LABEL */
+
+.work-hero-label {
+    display: inline-block;
+    color: #a5f3e7;
+    font-size: 16px;
+    font-weight: 750;
+    letter-spacing: 5px;
+    margin-bottom: 35px;
+}
+
+/* MAIN HEADING */
+
+.work-hero-content h1 {
+    color: #ffffff;
+    font-size: clamp(42px, 5.2vw, 76px);
+    font-weight: 750;
+    line-height: 1.13;
+    letter-spacing: -2px;
+    margin: 0 auto 35px;
+}
+
+/* DESCRIPTION */
+
+.work-hero-content p {
+    max-width: 950px;
+    margin: 0 auto;
+    color: #f5f8f6;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.8;
+}
+
+/* BOTTOM CURVED WAVE */
+
+.work-hero-wave {
+    position: absolute;
+    z-index: 3;
+    bottom: -1px;
+    left: -5%;
+    width: 110%;
+    height: 65px;
+    background: #ffffff;
+    border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+}
+
+/* TABLET */
+
+@media (max-width: 1024px) {
+    .work-hero {
+        min-height: 650px;
+    }
+
+    .work-hero-content h1 {
+        font-size: 55px;
+    }
+
+    .work-hero-content p {
+        font-size: 18px;
+    }
+}
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+    .work-hero {
+        min-height: 600px;
+        background-position: 55% center;
+    }
+
+    .work-hero-content {
+        padding: 40px 20px 90px;
+    }
+
+    .work-hero-label {
+        font-size: 12px;
+        letter-spacing: 3px;
+        margin-bottom: 25px;
+    }
+
+    .work-hero-content h1 {
+        font-size: 38px;
+        letter-spacing: -1px;
+        line-height: 1.2;
+        margin-bottom: 22px;
+    }
+
+    .work-hero-content p {
+        font-size: 15px;
+        line-height: 1.7;
+    }
+
+    .work-hero-wave {
+        height: 35px;
+    }
+}
+
+/* =================================
+   CHOOSE YOUR JOURNEY SECTION
+================================= */
+
+.journey-section {
+  width: 100%;
+  padding: 85px 4% 90px;
+  background: #ffffff;
+  overflow: hidden;
+}
+
+/* HEADING */
+
+.journey-heading {
+  text-align: center;
+  max-width: 1100px;
+  margin: 0 auto 65px;
+}
+
+.journey-label {
+  display: inline-block;
+  padding: 11px 25px;
+  border-radius: 30px;
+  font-size: 14px;
+  font-weight: 750;
+  letter-spacing: 3px;
+  margin-bottom: 22px;
+}
+
+.journey-heading h2 {
+  color: #102f28;
+  font-size: clamp(32px, 4vw, 54px);
+  font-weight: 750;
+  line-height: 1.2;
+  margin: 0 0 18px;
+}
+
+.journey-heading h2 strong {
+  color: #148343;
+}
+
+.journey-heading p {
+  color: #68717f;
+  font-size: 19px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* CARDS CONTAINER */
+
+
+.journey-container {
+  width: 85%;
+  max-width: 1450px;
+  margin: 0 auto;
+
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: 40px;
+}
+
+.journey-card {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+
+/* CARD */
+
+.journey-card {
+  position: relative;
+  min-height: 420px;
+  display: grid;
+  grid-template-columns: 46% 54%;
+  background: #ffffff;
+  border: 1px solid #e3eee7;
+  border-radius: 27px;
+  overflow: hidden;
+  box-shadow: 0 12px 35px rgba(25, 70, 45, 0.08);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.journey-card:hover {
+  transform: translateY(-7px);
+  box-shadow: 0 18px 42px rgba(25, 100, 55, 0.13);
+}
+
+/* IMAGE */
+
+.journey-image {
+  position: relative;
+  min-width: 0;
+  height: 100%;
+  min-height: 430px;
+  overflow: hidden;
+}
+
+.journey-image::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -1px;
+  width: 45px;
+  height: 100%;
+  background: #f8fcf9;
+  clip-path: ellipse(100% 50% at 100% 50%);
+  opacity: 0.85;
+}
+
+.journey-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.journey-card:hover .journey-image img {
+  transform: scale(1.05);
+}
+
+/* CONTENT */
+
+.journey-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 30px 25px;
+  background: linear-gradient(135deg, #ffffff, #f5fbf7);
+}
+
+/* NUMBER */
+
+.journey-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 68px;
+  height: 40px;
+  padding: 0 15px;
+  border-radius: 30px;
+  background: #e5f6eb;
+  color: #176b43;
+  font-size: 18px;
+  font-weight: 750;
+  margin-bottom: 14px;
+}
+
+/* ICON */
+
+.journey-icon {
+  width: 68px;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  background: #e7f6ec;
+  color: #168044;
+  font-size: 30px;
+  margin-bottom: 13px;
+}
+
+.journey-content h3 {
+  color: #103328;
+  font-size: 30px;
+  font-weight: 750;
+  line-height: 1.2;
+  margin: 0 0 15px;
+}
+
+.journey-content p {
+  color: #657080;
+  font-size: 17px;
+  line-height: 1.65;
+  margin: 0 0 25px;
+}
+
+/* BUTTON */
+
+.journey-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 15px 22px;
+  background: #0f766e;
+  color: #ffffff;
+  border-radius: 11px;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 700;
+  transition: all 0.3s ease;
+}
+
+.journey-button:hover {
+  background: #0c6330;
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.journey-button i {
+  font-size: 16px;
+  transition: transform 0.3s ease;
+}
+
+.journey-button:hover i {
+  transform: translateX(5px);
+}
+
+/* TABLET */
+
+@media (max-width: 1100px) {
+  .journey-container {
+    grid-template-columns: 1fr;
+    max-width: 750px;
+  }
+
+  .journey-card {
+    min-height: 390px;
+  }
+
+  .journey-image {
+    min-height: 390px;
+  }
+}
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+  .journey-section {
+    padding: 60px 18px;
+  }
+
+  .journey-heading {
+    margin-bottom: 40px;
+  }
+
+  .journey-heading h2 {
+    font-size: 32px;
+  }
+
+  .journey-heading p {
+    font-size: 15px;
+  }
+
+  .journey-label {
+    font-size: 12px;
+    letter-spacing: 2px;
+  }
+
+  .journey-card {
+    grid-template-columns: 1fr;
+    min-height: auto;
+    border-radius: 20px;
+  }
+
+  .journey-image {
+    height: 230px;
+    min-height: 230px;
+  }
+
+  .journey-image::after {
+    display: none;
+  }
+
+  .journey-content {
+    padding: 25px 22px 28px;
+  }
+
+  .journey-content h3 {
+    font-size: 25px;
+  }
+
+  .journey-content p {
+    font-size: 15px;
+  }
+
+  .journey-button {
+    width: 100%;
+    padding: 14px 12px;
+    font-size: 14px;
+  }
+}
+
+/* =====================================
+   DOCTOR DAILY WORKFLOW SECTION
+===================================== */
+
+.doctor-workflow-section {
+  width: 100%;
+  padding: 85px 5%;
+  background: #ffffff;
+  overflow: hidden;
+}
+
+/* HEADING */
+
+.doctor-workflow-heading {
+  max-width: 1050px;
+  margin: 0 auto 55px;
+  text-align: center;
+}
+
+.doctor-workflow-heading > span {
+  display: inline-block;
+  padding: 10px 24px;
+  border-radius: 30px;
+  font-size: 14px;
+  font-weight: 750;
+  letter-spacing: 2.5px;
+  margin-bottom: 20px;
+}
+
+.doctor-workflow-heading h2 {
+  color: #102e25;
+  font-size: clamp(32px, 3.8vw, 52px);
+  font-weight: 750;
+  line-height: 1.2;
+  margin: 0 0 17px;
+}
+
+.doctor-workflow-heading h2 strong {
+  color: #168343;
+}
+
+.doctor-workflow-heading p {
+  max-width: 850px;
+  margin: auto;
+  color: #687384;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+/* MAIN LAYOUT */
+
+.doctor-workflow-container {
+  width: 96%;
+  max-width: 1600px;
+  margin: auto;
+
+  display: grid;
+  grid-template-columns: 0.95fr 1fr;
+
+  align-items: center;
+  column-gap: 95px;
+}
+
+/* LEFT VISUAL */
+
+.doctor-workflow-visual {
+  position: relative;
+  min-height: 510px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  transform: translateX(-185px);
+}
+
+.workflow-green-shape {
+  position: absolute;
+  width: 80%;
+  height: 85%;
+  top: 5%;
+  left: 5%;
+  border-radius: 48% 52% 45% 55%;
+  background: #e0f5e7;
+  transform: rotate(-10deg);
+}
+
+.workflow-doctor-image {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 70%;
+  height: 90%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 180px 180px 15px 15px;
+  z-index: 1;
+}
+
+/* DASHBOARD PREVIEW */
+
+.workflow-dashboard {
+  position: absolute;
+  right: 0;
+  top: 17%;
+  z-index: 2;
+  width: 65%;
+  max-width: 420px;
+  background: #ffffff;
+  border: 1px solid #dce9e1;
+  border-radius: 17px;
+  box-shadow: 0 15px 40px rgba(20, 70, 45, 0.13);
+  overflow: hidden;
+  margin-left: 70px;
+}
+
+.workflow-dashboard-header {
+  padding: 15px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  background: #0e7542;
+  color: #ffffff;
+}
+
+.workflow-dashboard-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 17px;
+}
+
+.workflow-dashboard-brand i {
+  font-size: 19px;
+}
+
+.workflow-dashboard-status {
+  font-size: 11px;
+  opacity: 0.85;
+}
+
+.workflow-dashboard-body {
+  padding: 19px;
+}
+
+.workflow-dashboard-greeting {
+  color: #183b2c;
+  font-size: 17px;
+  font-weight: 750;
+  margin: 0 0 4px;
+}
+
+.workflow-dashboard-subtitle {
+  color: #89948e;
+  font-size: 12px;
+}
+
+/* DASHBOARD STATS */
+
+.workflow-dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin: 18px 0;
+}
+
+.workflow-stat {
+  padding: 12px;
+  display: grid;
+  grid-template-columns: 25px 1fr;
+  gap: 5px;
+  align-items: center;
+  background: #f0f8f2;
+  border-radius: 10px;
+}
+
+.workflow-stat i {
+  color: #168348;
+  grid-row: span 2;
+  font-size: 18px;
+}
+
+.workflow-stat span {
+  color: #6f8075;
+  font-size: 10px;
+}
+
+.workflow-stat strong {
+  color: #183b2c;
+  font-size: 19px;
+}
+
+/* SCHEDULE */
+
+.workflow-schedule {
+  border-top: 1px solid #edf1ed;
+  padding-top: 15px;
+}
+
+.workflow-schedule-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.workflow-schedule-heading strong {
+  color: #243c31;
+  font-size: 13px;
+}
+
+.workflow-schedule-heading span {
+  color: #168348;
+  font-size: 11px;
+}
+
+.workflow-schedule-row {
+  display: grid;
+  grid-template-columns: 72px 20px 1fr;
+  gap: 8px;
+  align-items: center;
+  padding: 10px 8px;
+  margin-bottom: 7px;
+  background: #f7faf8;
+  border-radius: 7px;
+}
+
+.workflow-schedule-row span {
+  color: #64756b;
+  font-size: 10px;
+}
+
+.workflow-schedule-row i {
+  color: #168348;
+  font-size: 12px;
+}
+
+.workflow-schedule-row strong {
+  color: #35463c;
+  font-size: 11px;
+}
+
+/* FLOATING CARDS */
+
+.workflow-floating-card {
+  position: absolute;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 16px;
+  background: #ffffff;
+  border: 1px solid #e1eee5;
+  border-radius: 13px;
+  box-shadow: 0 8px 25px rgba(30, 80, 50, 0.10);
+}
+
+.workflow-appointment-card {
+  top: 9%;
+  left: 0;
+}
+
+.workflow-patient-card {
+  bottom: 12%;
+  left: 4%;
+}
+
+.workflow-floating-icon {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 11px;
+  background: #e8f7ed;
+  color: #168348;
+  font-size: 19px;
+}
+
+.workflow-floating-card span {
+  display: block;
+  color: #68796e;
+  font-size: 11px;
+  margin-bottom: 4px;
+}
+
+.workflow-floating-card h3 {
+  color: #173d2c;
+  font-size: 19px;
+  margin: 0;
+}
+
+/* RIGHT FEATURE GRID */
+
+.doctor-workflow-features {
+  width: 90%;
+  justify-self: end;
+
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.workflow-feature-card {
+  min-height: 215px;
+  padding: 23px;
+  background: #ffffff;
+  border: 1px solid #dcefe3;
+  border-radius: 24px;
+  transition: all 0.3s ease;
+}
+
+.workflow-feature-card:hover {
+  transform: translateY(-6px);
+  border-color: #9bd9b1;
+  box-shadow: 0 12px 30px rgba(20, 100, 50, 0.08);
+}
+
+.workflow-feature-icon {
+  width: 65px;
+  height: 65px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e5f6eb;
+  color: #138044;
+  border-radius: 17px;
+  font-size: 27px;
+  margin-bottom: 16px;
+}
+
+.workflow-feature-card h3 {
+  color: #17382b;
+  font-size: 21px;
+  font-weight: 750;
+  line-height: 1.3;
+  margin: 0 0 10px;
+}
+
+.workflow-feature-card p {
+  color: #6b7787;
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* TABLET */
+
+@media (max-width: 1100px) {
+   .doctor-workflow-container {
+    width: 100%;
+    grid-template-columns: 1fr;
+    gap: 45px;
+  }
+
+  .doctor-workflow-visual {
+    min-height: 540px;
+  }
+
+  .workflow-doctor-image {
+    width: 65%;
+  }
+
+  .workflow-dashboard {
+    width: 58%;
+    right: 2%;
+  }
+}
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+  .doctor-workflow-section {
+    padding: 60px 18px;
+  }
+
+  .doctor-workflow-heading {
+    margin-bottom: 35px;
+  }
+
+  .doctor-workflow-heading h2 {
+    font-size: 31px;
+  }
+
+  .doctor-workflow-heading p {
+    font-size: 15px;
+  }
+
+  .doctor-workflow-heading > span {
+    font-size: 11px;
+    letter-spacing: 2px;
+  }
+
+  .doctor-workflow-visual {
+    min-height: 430px;
+  }
+
+  .workflow-doctor-image {
+    width: 78%;
+    height: 78%;
+  }
+
+  .workflow-dashboard {
+    width: 72%;
+    right: 0;
+    top: 15%;
+  }
+
+  .workflow-dashboard-body {
+    padding: 12px;
+  }
+
+  .workflow-dashboard-header {
+    padding: 11px;
+  }
+
+  .workflow-dashboard-brand {
+    font-size: 14px;
+  }
+
+  .workflow-dashboard-greeting {
+    font-size: 14px;
+  }
+
+  .workflow-stat {
+    padding: 8px;
+  }
+
+  .workflow-schedule-row {
+    grid-template-columns: 58px 16px 1fr;
+    gap: 5px;
+    padding: 8px 5px;
+  }
+
+  .workflow-floating-card {
+    padding: 9px;
+    gap: 7px;
+  }
+
+  .workflow-floating-icon {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+
+  .workflow-floating-card span {
+    font-size: 9px;
+  }
+
+  .workflow-floating-card h3 {
+    font-size: 15px;
+  }
+
+  .workflow-appointment-card {
+    top: 2%;
+  }
+
+  .workflow-patient-card {
+    bottom: 4%;
+  }
+
+  .doctor-workflow-features {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .workflow-feature-card {
+    min-height: auto;
+    padding: 22px;
+  }
+
+  .workflow-feature-card h3 {
+    font-size: 19px;
+  }
+
+  .workflow-feature-card p {
+    font-size: 15px;
+  }
+}
+
+/* ===================================
+   HOW IT WORKS FOR PATIENTS
+=================================== */
+
+.patient-journey-section {
+  width: 100%;
+  padding: 85px 5% 95px;
+  background: #f8fcf9;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+/* HEADING */
+
+.patient-journey-heading {
+  max-width: 1100px;
+  width: 88%;
+  margin: 0 auto 55px;
+  text-align: center;
+}
+
+.patient-journey-heading > span {
+  display: inline-block;
+  padding: 9px 24px;
+  border-radius: 30px;
+  font-size: 14px;
+  font-weight: 750;
+  letter-spacing: 2.5px;
+  margin-bottom: 20px;
+}
+
+.patient-journey-heading h2 {
+  color: #14251d;
+  font-size: clamp(32px, 3.5vw, 50px);
+  font-weight: 750;
+  line-height: 1.2;
+  margin: 0 0 17px;
+}
+
+.patient-journey-heading h2 strong {
+  color: #138044;
+}
+
+.patient-journey-heading p {
+  color: #697586;
+  font-size: 14px;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* STEPS GRID */
+
+.patient-steps-container {
+  width: 88%;
+  max-width: 1450px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 18px;
+}
+
+/* CARD */
+
+.patient-step-card {
+  position: relative;
+  min-width: 0;
+  background: #ffffff;
+  border: 1px solid #e1eee6;
+  border-radius: 22px;
+  overflow: visible;
+  box-shadow: 0 7px 24px rgba(22, 80, 48, 0.045);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.patient-step-card:hover {
+  transform: translateY(-7px);
+  box-shadow: 0 14px 32px rgba(22, 80, 48, 0.10);
+}
+
+/* IMAGE */
+
+.patient-step-image {
+  position: relative;
+  width: 100%;
+  height: 180px;
+  border-radius: 21px 21px 0 0;
+  overflow: hidden;
+  background: #e7f4eb;
+}
+
+.patient-step-image img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.patient-step-card:hover .patient-step-image img {
+  transform: scale(1.07);
+}
+
+/* NUMBER BADGE */
+
+.patient-step-number {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 2;
+  width: 55px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #138447;
+  color: #ffffff;
+  border-radius: 25px;
+  font-size: 22px;
+  font-weight: 750;
+  box-shadow: 0 4px 12px rgba(0, 80, 35, 0.18);
+}
+
+/* CARD CONTENT */
+
+.patient-step-content {
+  position: relative;
+  padding: 20px 17px 25px;
+  min-height: 195px;
+}
+
+/* ICON */
+
+.patient-step-icon {
+  width: 49px;
+  height: 49px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e5f6eb;
+  color: #168044;
+  border-radius: 13px;
+  font-size: 22px;
+  margin-bottom: 13px;
+}
+
+.patient-step-content h3 {
+  color: #14251d;
+  font-size: 18px;
+  font-weight: 750;
+  line-height: 1.35;
+  margin: 0 0 10px;
+}
+
+.patient-step-content p {
+  color: #687586;
+  font-size: 14px;
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* CONNECTING ARROWS */
+
+/* .patient-step-card:not(:last-child)::after {
+  content: "\f061";
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  position: absolute;
+  top: 160px;
+  right: -24px;
+  z-index: 4;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e5f6eb;
+  color: #138044;
+  border-radius: 50%;
+  font-size: 17px;
+  border: 3px solid #f8fcf9;
+} */
+
+/* LARGE LAPTOP */
+
+@media (max-width: 1450px) {
+  .patient-steps-container {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 25px;
+  }
+
+  .patient-step-card:not(:last-child)::after {
+    display: none;
+  }
+
+  .patient-step-image {
+    height: 210px;
+  }
+
+  .patient-step-content {
+    min-height: 180px;
+  }
+}
+
+/* TABLET */
+
+@media (max-width: 850px) {
+  .patient-journey-section {
+    padding: 65px 4%;
+  }
+
+  .patient-steps-container {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+
+  .patient-step-image {
+    height: 190px;
+  }
+}
+
+/* MOBILE */
+
+@media (max-width: 520px) {
+  .patient-journey-section {
+    padding: 55px 18px;
+  }
+
+  .patient-journey-heading {
+    margin-bottom: 35px;
+  }
+
+  .patient-journey-heading h2 {
+    font-size: 30px;
+  }
+
+  .patient-journey-heading p {
+    font-size: 15px;
+  }
+
+  .patient-journey-heading > span {
+    font-size: 11px;
+    letter-spacing: 2px;
+  }
+
+  .patient-steps-container {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+  .patient-step-image {
+    height: 220px;
+  }
+
+  .patient-step-content {
+    min-height: auto;
+    padding: 20px;
+  }
+
+  .patient-step-content h3 {
+    font-size: 20px;
+  }
+
+  .patient-step-content p {
+    font-size: 15px;
+  }
+}
+
+/* =================================
+   MEDQUEUE FAQ SECTION
+================================= */
+
+.work-faq-section {
+  width: 100%;
+  padding: 75px 5% 65px;
+  background: #f6f8fc;
+  overflow: hidden;
+}
+
+.work-faq-container {
+  max-width: 1300px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: 0.82fr 1.18fr;
+  gap: 65px;
+  align-items: start;
+}
+
+/* LEFT CONTENT */
+
+.work-faq-left {
+  padding-top: 0;
+}
+
+.work-faq-label {
+  display: inline-block;
+  padding: 12px 23px;
+  border-radius: 30px;
+  font-size: 14px;
+  font-weight: 750;
+  letter-spacing: 2px;
+  margin-bottom: 30px;
+}
+
+.work-faq-left h2 {
+  color: #171e2e;
+  font-size: clamp(45px, 4.5vw, 68px);
+  font-weight: 750;
+  line-height: 1.12;
+  letter-spacing: -1.5px;
+  margin: 0 0 30px;
+}
+
+.work-faq-left h2 span {
+  color: #119987;
+}
+
+.work-faq-left > p {
+  max-width: 550px;
+  color: #53647c;
+  font-size: 19px;
+  line-height: 1.8;
+  margin: 0;
+}
+
+/* ROBOT IMAGE */
+
+.work-faq-robot {
+  width: 100%;
+  max-width: 390px;
+  height: 390px;
+  margin: 25px auto 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.work-faq-robot img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+/* RIGHT ACCORDION */
+
+.work-faq-right {
+  width: 100%;
+}
+
+.work-faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.work-faq-item {
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #dce5f0;
+  border-radius: 19px;
+  overflow: hidden;
+  box-shadow: 0 7px 22px rgba(30, 50, 90, 0.035);
+  transition: all 0.3s ease;
+}
+
+.work-faq-item:hover,
+.work-faq-item.active {
+  border-color: #b8d9fa;
+  box-shadow: 0 8px 25px rgba(30, 70, 120, 0.07);
+}
+
+/* QUESTION */
+
+.work-faq-question {
+  width: 100%;
+  min-height: 86px;
+  padding: 20px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  color: #14243d;
+  font-family: inherit;
+  font-size: 20px;
+  font-weight: 650;
+}
+
+/* PLUS / MINUS */
+
+.work-faq-toggle {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #edf5ff;
+  color: #1685e8;
+  border-radius: 50%;
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1;
+  transition: all 0.3s ease;
+}
+
+.work-faq-item.active .work-faq-toggle {
+  background: #edf5ff;
+  color: #1685e8;
+}
+
+/* ANSWER */
+
+.work-faq-answer {
+  padding: 0 28px 25px;
+  animation: workFaqOpen 0.25s ease;
+}
+
+.work-faq-answer p {
+  color: #596b84;
+  font-size: 17px;
+  line-height: 1.8;
+  margin: 0;
+}
+
+@keyframes workFaqOpen {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* TABLET */
+
+@media (max-width: 1000px) {
+  .work-faq-container {
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: 35px;
+  }
+
+  .work-faq-left h2 {
+    font-size: 46px;
+  }
+
+  .work-faq-question {
+    font-size: 17px;
+    min-height: 76px;
+    padding: 18px 20px;
+  }
+}
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+  .work-faq-section {
+    padding: 60px 20px;
+  }
+
+  .work-faq-container {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .work-faq-left h2 {
+    font-size: 43px;
+  }
+
+  .work-faq-left > p {
+    font-size: 16px;
+  }
+
+  .work-faq-robot {
+    max-width: 260px;
+    height: 260px;
+    margin-top: 15px;
+  }
+
+  .work-faq-list {
+    gap: 12px;
+  }
+
+  .work-faq-question {
+    min-height: 72px;
+    padding: 17px;
+    font-size: 16px;
+  }
+
+  .work-faq-toggle {
+    width: 32px;
+    height: 32px;
+    font-size: 25px;
+  }
+
+  .work-faq-answer {
+    padding: 0 17px 20px;
+  }
+
+  .work-faq-answer p {
+    font-size: 14px;
+  }
+}
+

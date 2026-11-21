@@ -1,0 +1,574 @@
+
+.doctor-signup-page {
+  min-height: 100vh;
+  padding: 65px 22px 55px;
+  box-sizing: border-box;
+  background:
+    radial-gradient(ellipse at 5% 0%, rgba(8, 170, 166, 0.07), transparent 35%),
+    #f5f9f8;
+  color: #173d3d;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.doctor-signup-wrapper {
+  width: 100%;
+  max-width: 920px;
+  margin: 0 auto;
+}
+
+.doctor-signup-heading {
+  margin-bottom: 35px;
+}
+
+.doctor-signup-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 16px;
+  color: #078c89;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.doctor-signup-eyebrow-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #08aaa6;
+}
+
+.doctor-signup-heading h1 {
+  margin: 0;
+  color: #173d3d;
+  font-size: clamp(32px, 4vw, 45px);
+  font-weight: 750;
+  line-height: 1.2;
+  letter-spacing: -1.5px;
+}
+
+.doctor-signup-heading h1 span {
+  color: #078c89;
+}
+
+.doctor-signup-heading > p {
+  max-width: 650px;
+  margin: 15px 0 0;
+  color: #718583;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.doctor-signup-card {
+  padding: 35px 38px;
+  border: 1px solid #e0ebe7;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 18px 55px rgba(20, 65, 59, 0.055);
+}
+
+.doctor-signup-card-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding-bottom: 27px;
+  border-bottom: 1px solid #eaf0ed;
+}
+
+.doctor-signup-step {
+  display: inline-block;
+  margin-bottom: 9px;
+  color: #078c89;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.doctor-signup-card-heading h2 {
+  margin: 0;
+  color: #173d3d;
+  font-size: 23px;
+  letter-spacing: -0.5px;
+}
+
+.doctor-signup-card-heading p {
+  margin: 9px 0 0;
+  color: #7a8c89;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.doctor-signup-medical-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  border-radius: 15px;
+  background: #e5f6f2;
+  color: #078c89;
+  font-size: 32px;
+}
+
+.doctor-signup-form {
+  padding-top: 30px;
+}
+
+.doctor-signup-section-title {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin-bottom: 22px;
+}
+
+.doctor-signup-section-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 39px;
+  height: 39px;
+  border: 1px solid #d4ebe5;
+  border-radius: 12px;
+  background: #f0faf7;
+  color: #078c89;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.doctor-signup-section-title h3 {
+  margin: 0;
+  color: #234544;
+  font-size: 16px;
+  font-weight: 750;
+}
+
+.doctor-signup-section-title p {
+  margin: 5px 0 0;
+  color: #82928f;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.doctor-signup-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px 20px;
+}
+
+.doctor-signup-field {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  min-width: 0;
+  gap: 9px;
+}
+
+.doctor-signup-full {
+  grid-column: 1 / -1;
+}
+
+.doctor-signup-field > label {
+  color: #294b49;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.doctor-signup-field > input:not([type="file"]) {
+  width: 100%;
+  height: 48px;
+  padding: 0 15px;
+  box-sizing: border-box;
+  border: 1px solid #dce7e3;
+  border-radius: 9px;
+  outline: none;
+  background: #fbfdfc;
+  color: #173d3d;
+  font-family: inherit;
+  font-size: 13px;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+.doctor-signup-field > input:not([type="file"]):hover {
+  border-color: #b5d6ce;
+}
+
+.doctor-signup-field > input:not([type="file"]):focus {
+  border-color: #078c89;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(7, 140, 137, 0.09);
+}
+
+.doctor-signup-field > input::placeholder {
+  color: #a0aeaa;
+}
+
+.doctor-signup-field > small {
+  color: #83928f;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.doctor-signup-upload {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-height: 122px;
+  padding: 18px;
+  box-sizing: border-box;
+  border: 1px dashed #b9d8d0;
+  border-radius: 12px;
+  background: #f8fcfa;
+}
+
+.doctor-signup-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 82px;
+  height: 82px;
+  overflow: hidden;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  background: #dff4ee;
+  box-shadow: 0 0 0 1px #d8ebe4;
+  color: #078c89;
+  font-size: 30px;
+}
+
+.doctor-signup-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.doctor-signup-upload-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 7px;
+  min-width: 0;
+}
+
+.doctor-signup-upload-info strong {
+  color: #244b48;
+  font-size: 13px;
+}
+
+.doctor-signup-upload-info p {
+  margin: 0;
+  color: #82928f;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.doctor-signup-file-input {
+  display: none;
+}
+
+.doctor-signup-file-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  padding: 0 13px;
+  box-sizing: border-box;
+  border: 1px solid #cfe6df;
+  border-radius: 7px;
+  background: #fff;
+  color: #087f7b;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.doctor-signup-file-button:hover {
+  background: #eaf8f4;
+}
+
+.doctor-signup-divider {
+  height: 1px;
+  margin: 32px 0;
+  background: #eaf0ed;
+}
+
+.doctor-signup-document {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  min-height: 75px;
+  padding: 13px 15px;
+  box-sizing: border-box;
+  border: 1px solid #dce8e3;
+  border-radius: 10px;
+  background: #fbfdfc;
+}
+
+.doctor-signup-document-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: #e6f5f1;
+  color: #078c89;
+  font-size: 24px;
+}
+
+.doctor-signup-document > div {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.doctor-signup-document strong {
+  color: #345451;
+  font-size: 12px;
+}
+
+.doctor-signup-document small {
+  color: #84938f;
+  font-size: 11px;
+}
+
+.doctor-signup-document input[type="file"] {
+  width: 180px;
+  max-width: 48%;
+  color: #627773;
+  font-family: inherit;
+  font-size: 10px;
+}
+
+.doctor-signup-document input[type="file"]::file-selector-button {
+  margin-right: 8px;
+  padding: 8px 10px;
+  border: 1px solid #d4e6df;
+  border-radius: 6px;
+  background: #fff;
+  color: #087f7b;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.doctor-signup-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  margin-top: 30px;
+  padding: 15px;
+  border: 1px solid #d9ebe5;
+  border-radius: 10px;
+  background: #f1faf6;
+}
+
+.doctor-signup-note > span {
+  flex-shrink: 0;
+  color: #078c89;
+  font-size: 17px;
+}
+
+.doctor-signup-note p {
+  margin: 0;
+  color: #57736d;
+  font-size: 11px;
+  line-height: 1.8;
+}
+
+.doctor-signup-submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  width: 100%;
+  min-height: 53px;
+  margin-top: 23px;
+  padding: 12px 20px;
+  border: 0;
+  border-radius: 9px;
+  background: #087f7b;
+  color: #fff;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 750;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+
+.doctor-signup-submit:hover:not(:disabled) {
+  transform: translateY(-1px);
+  background: #066b68;
+  box-shadow: 0 8px 20px rgba(8, 127, 123, 0.17);
+}
+
+.doctor-signup-submit:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.doctor-signup-submit span {
+  font-size: 20px;
+}
+
+.doctor-signup-privacy {
+  margin: 15px 0 0;
+  color: #899893;
+  font-size: 10px;
+  line-height: 1.8;
+  text-align: center;
+}
+
+.doctor-signup-message {
+  margin-top: 20px;
+  padding: 13px 15px;
+  border-radius: 9px;
+  font-size: 12px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+.doctor-signup-success {
+  border: 1px solid #bfe5d2;
+  background: #effaf3;
+  color: #226b46;
+}
+
+.doctor-signup-error {
+  border: 1px solid #f0c9c5;
+  background: #fff4f2;
+  color: #a5362c;
+}
+
+.doctor-signup-footer-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  margin-top: 27px;
+  color: #81918d;
+  font-size: 11px;
+}
+
+.doctor-signup-footer-note span {
+  color: #078c89;
+  font-size: 16px;
+}
+
+@media (max-width: 650px) {
+  .doctor-signup-page {
+    padding: 38px 15px 35px;
+  }
+
+  .doctor-signup-heading {
+    margin-bottom: 25px;
+  }
+
+  .doctor-signup-heading h1 {
+    font-size: 33px;
+    letter-spacing: -0.9px;
+  }
+
+  .doctor-signup-heading > p {
+    font-size: 13px;
+  }
+
+  .doctor-signup-card {
+    padding: 24px 19px;
+    border-radius: 15px;
+  }
+
+  .doctor-signup-card-heading h2 {
+    font-size: 19px;
+  }
+
+  .doctor-signup-medical-icon {
+    width: 43px;
+    height: 43px;
+    border-radius: 12px;
+    font-size: 25px;
+  }
+
+  .doctor-signup-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 19px;
+  }
+
+  .doctor-signup-full {
+    grid-column: 1;
+  }
+
+  .doctor-signup-upload {
+    gap: 13px;
+    padding: 13px;
+  }
+
+  .doctor-signup-avatar {
+    width: 65px;
+    height: 65px;
+  }
+
+  .doctor-signup-upload-info strong {
+    font-size: 12px;
+  }
+
+  .doctor-signup-upload-info p {
+    font-size: 10px;
+  }
+
+  .doctor-signup-document {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .doctor-signup-document > div {
+    flex-basis: calc(100% - 55px);
+  }
+
+  .doctor-signup-document input[type="file"] {
+    width: 100%;
+    max-width: 100%;
+    margin-left: 50px;
+  }
+
+  .doctor-signup-divider {
+    margin: 27px 0;
+  }
+}
+
+@media (max-width: 380px) {
+  .doctor-signup-page {
+    padding-right: 11px;
+    padding-left: 11px;
+  }
+
+  .doctor-signup-card {
+    padding: 20px 14px;
+  }
+
+  .doctor-signup-heading h1 {
+    font-size: 29px;
+  }
+
+  .doctor-signup-upload {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .doctor-signup-avatar {
+    width: 72px;
+    height: 72px;
+  }
+
+  .doctor-signup-document {
+    padding: 11px;
+  }
+}
+
+

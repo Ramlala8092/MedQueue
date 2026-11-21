@@ -1,0 +1,333 @@
+/* .booking-container {
+    max-width: 650px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.booking-back {
+    display: inline-block;
+    margin-bottom: 20px;
+    color: #087f8c;
+    text-decoration: none;
+}
+
+.booking-card {
+    padding: 28px;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+}
+
+.booking-card h1 {
+    margin: 0 0 8px;
+    color: #123047;
+}
+
+.booking-subtitle {
+    color: #64748b;
+    margin-bottom: 24px;
+}
+
+.booking-doctor {
+    padding: 16px;
+    margin-bottom: 24px;
+    border-radius: 10px;
+    background: #f0fdfa;
+}
+
+.booking-doctor h2 {
+    margin: 0 0 6px;
+    font-size: 20px;
+}
+
+.booking-doctor p {
+    margin: 5px 0;
+}
+
+.booking-card form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.booking-card label {
+    margin-top: 10px;
+    font-weight: 600;
+}
+
+.booking-card input,
+.booking-card textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font: inherit;
+}
+
+.booking-card button {
+    margin-top: 14px;
+    padding: 13px;
+    border: none;
+    border-radius: 8px;
+    background: #087f8c;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.booking-card button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.booking-error {
+    color: #dc2626;
+}
+
+.booking-message {
+    padding: 30px;
+    text-align: center;
+}
+
+
+.booking-card select {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0 18px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 15px;
+}
+
+.booking-time-preview {
+  margin: 0 0 18px;
+  padding: 12px;
+  border-radius: 8px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-size: 14px;
+}
+ */
+
+
+
+.booking-container {
+    max-width: 650px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.booking-back {
+    display: inline-block;
+    margin-bottom: 20px;
+    color: #087f8c;
+    text-decoration: none;
+}
+
+.booking-card {
+    padding: 28px;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+}
+
+.booking-card h1 {
+    margin: 0 0 8px;
+    color: #123047;
+}
+
+.booking-subtitle {
+    color: #64748b;
+    margin-bottom: 24px;
+}
+
+.booking-doctor {
+    padding: 16px;
+    margin-bottom: 24px;
+    border-radius: 10px;
+    background: #f0fdfa;
+}
+
+.booking-doctor h2 {
+    margin: 0 0 6px;
+    font-size: 20px;
+}
+
+.booking-doctor p {
+    margin: 5px 0;
+}
+
+.booking-card form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.booking-card label {
+    margin-top: 10px;
+    font-weight: 600;
+}
+
+.booking-card input,
+.booking-card textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font: inherit;
+}
+
+.booking-card button {
+    margin-top: 14px;
+    padding: 13px;
+    border: none;
+    border-radius: 8px;
+    background: #087f8c;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.booking-card button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.booking-error {
+    color: #dc2626;
+}
+
+.booking-message {
+    padding: 30px;
+    text-align: center;
+}
+
+.booking-card select {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0 18px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background: #fff;
+    font-size: 15px;
+}
+
+.booking-time-preview {
+    margin: 0 0 18px;
+    padding: 12px;
+    border-radius: 8px;
+    background: #eff6ff;
+    color: #1d4ed8;
+    font-size: 14px;
+}
+
+/* =================================
+   CONSULTATION SELECTION
+================================= */
+
+.consultation-selection {
+    margin: 12px 0 18px;
+}
+
+.consultation-selection h3 {
+    color: #123047;
+    font-size: 19px;
+    margin: 0 0 7px;
+}
+
+.consultation-selection > p {
+    color: #64748b;
+    font-size: 14px;
+    margin: 0 0 15px;
+}
+
+.consultation-options {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+
+.booking-card .consultation-option {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 7px;
+    padding: 17px;
+    margin: 0;
+    border: 1.5px solid #dbe5e5;
+    border-radius: 12px;
+    background: #ffffff;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.booking-card .consultation-option:hover {
+    border-color: #087f8c;
+    background: #f8fdfd;
+    transform: translateY(-2px);
+}
+
+.booking-card .consultation-option.active {
+    border-color: #087f8c;
+    background: #f0fdfa;
+    box-shadow: 0 3px 12px rgba(8, 127, 140, 0.08);
+}
+
+.booking-card .consultation-option input {
+    position: absolute;
+    top: 18px;
+    right: 15px;
+    width: 17px;
+    height: 17px;
+    margin: 0;
+    padding: 0;
+    accent-color: #087f8c;
+    cursor: pointer;
+}
+
+.consultation-icon {
+    font-size: 26px;
+    line-height: 1.4;
+}
+
+.booking-card .consultation-option strong {
+    color: #123047;
+    font-size: 15px;
+}
+
+.booking-card .consultation-option small {
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+@media (min-width: 600px) {
+    .consultation-options {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .booking-card .consultation-option:last-child {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 480px) {
+    .booking-container {
+        margin: 15px auto;
+        padding: 12px;
+    }
+
+    .booking-card {
+        padding: 18px;
+    }
+}
+
+
+

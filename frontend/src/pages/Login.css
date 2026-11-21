@@ -1,0 +1,328 @@
+
+.account-login-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f7faf9;
+  color: #183b3b;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.account-login-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25px 7%;
+  border-bottom: 1px solid #e7efec;
+  background: #fff;
+}
+
+.account-login-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  color: #183b3b;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.7px;
+  text-decoration: none;
+}
+
+.account-brand-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 39px;
+  height: 39px;
+  border-radius: 11px;
+  background: #087f83;
+  color: #fff;
+  font-size: 25px;
+}
+
+.account-home-link {
+  color: #5e7778;
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.account-home-link:hover {
+  color: #087f83;
+}
+
+.account-login-content {
+  width: min(960px, 86%);
+  margin: 0 auto;
+  padding: 76px 0 55px;
+}
+
+.account-login-intro {
+  max-width: 650px;
+  margin-bottom: 35px;
+}
+
+.account-login-eyebrow {
+  display: inline-block;
+  margin-bottom: 17px;
+  color: #078b87;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2.2px;
+}
+
+.account-login-intro h1 {
+  margin: 0;
+  color: #183b3b;
+  font-size: clamp(34px, 4vw, 48px);
+  line-height: 1.2;
+  letter-spacing: -1.8px;
+}
+
+.account-login-intro h1 span {
+  color: #078b87;
+}
+
+.account-login-intro p {
+  margin: 17px 0 0;
+  color: #708482;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+.account-login-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.account-login-card {
+  position: relative;
+  min-height: 265px;
+  padding: 30px;
+  overflow: hidden;
+  border: 1px solid #dce9e5;
+  border-radius: 18px;
+  background: #fff;
+  box-sizing: border-box;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.account-login-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 18px 40px rgba(26, 71, 66, 0.09);
+}
+
+.account-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 25px;
+}
+
+.account-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+}
+
+.account-card-icon svg {
+  width: 26px;
+  height: 26px;
+}
+
+.doctor-card-icon {
+  background: #e5f5f1;
+  color: #087f83;
+}
+
+.patient-card-icon {
+  background: #edf0ff;
+  color: #5367c8;
+}
+
+.account-card-number {
+  color: #8b9d99;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+}
+
+.account-login-card h2 {
+  position: relative;
+  z-index: 1;
+  margin: 0 0 12px;
+  color: #183b3b;
+  font-size: 23px;
+  letter-spacing: -0.5px;
+}
+
+.account-login-card > p {
+  position: relative;
+  z-index: 1;
+  max-width: 355px;
+  min-height: 48px;
+  margin: 0 0 24px;
+  color: #718481;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.account-card-link {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  padding-top: 17px;
+  border-top: 1px solid #edf2f0;
+  color: #087f83;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.patient-account-card .account-card-link {
+  color: #5367c8;
+}
+
+.account-link-arrow {
+  font-size: 21px;
+  transition: transform 0.2s ease;
+}
+
+.account-card-link:hover .account-link-arrow {
+  transform: translateX(5px);
+}
+
+.account-card-decoration {
+  position: absolute;
+  right: 16px;
+  bottom: 47px;
+  font-size: 110px;
+  line-height: 1;
+  opacity: 0.035;
+  pointer-events: none;
+}
+
+.account-login-signup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 32px;
+  color: #718481;
+  font-size: 13px;
+}
+
+.account-login-signup a {
+  color: #087f83;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.account-login-signup a:hover {
+  text-decoration: underline;
+}
+
+.account-login-trust {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  margin-top: 37px;
+  color: #84938f;
+  font-size: 11px;
+  text-align: center;
+}
+
+.account-trust-dot {
+  width: 7px;
+  height: 7px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #0b9b83;
+}
+
+.account-login-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  margin-top: auto;
+  padding: 22px 7%;
+  border-top: 1px solid #e7efec;
+  background: #fff;
+  color: #899792;
+  font-size: 11px;
+}
+
+@media (max-width: 700px) {
+  .account-login-header {
+    padding: 19px 6%;
+  }
+
+  .account-login-brand {
+    font-size: 21px;
+  }
+
+  .account-brand-icon {
+    width: 35px;
+    height: 35px;
+  }
+
+  .account-login-content {
+    width: 88%;
+    padding: 52px 0 42px;
+  }
+
+  .account-login-intro h1 {
+    font-size: 36px;
+    letter-spacing: -1px;
+  }
+
+  .account-login-cards {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .account-login-card {
+    min-height: 250px;
+    padding: 25px;
+  }
+
+  .account-card-top {
+    margin-bottom: 21px;
+  }
+
+  .account-login-trust {
+    line-height: 1.7;
+  }
+
+  .account-login-footer {
+    padding: 19px 6%;
+  }
+}
+
+@media (max-width: 380px) {
+  .account-home-link {
+    font-size: 11px;
+  }
+
+  .account-login-intro h1 {
+    font-size: 31px;
+  }
+
+  .account-login-card {
+    padding: 21px;
+  }
+
+  .account-login-footer {
+    font-size: 10px;
+  }
+}
