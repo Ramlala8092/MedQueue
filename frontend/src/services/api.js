@@ -1,4 +1,6 @@
-const API_BASE = "/api";
+
+
+const API_BASE = `${import.meta.env.VITE_API_URL}/api`;
 
 export async function getHealth() {
   const response = await fetch(`${API_BASE}/health`);
@@ -11,12 +13,9 @@ export async function getDoctors() {
   if (!response.ok) throw new Error("Could not load doctors");
   return response.json();
 }
+
 export async function getHomeDoctors() {
-  const response = await fetch("/api/doctors/home/random");
-
-  if (!response.ok) {
-    throw new Error("Could not load doctors");
-  }
-
+  const response = await fetch(`${API_BASE}/doctors/home/random`);
+  if (!response.ok) throw new Error("Could not load doctors");
   return response.json();
 }

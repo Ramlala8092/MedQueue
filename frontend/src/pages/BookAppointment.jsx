@@ -248,6 +248,8 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { getDoctors } from "../services/api";
 import "./BookAppointment.css";
 
+const API_BASE = `${import.meta.env.VITE_API_URL}/api`;
+
 export default function BookAppointment() {
   const { doctorId } = useParams();
   const navigate = useNavigate();
@@ -367,7 +369,7 @@ export default function BookAppointment() {
     setSaving(true);
 
     try {
-      const response = await fetch("/api/appointments", {
+      const response = await fetch(`${API_BASE}/appointments`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -406,9 +408,9 @@ export default function BookAppointment() {
 
   const endTime = appointmentAt
     ? new Date(
-        new Date(appointmentAt).getTime() +
-          Number(durationMinutes) * 60000
-      )
+      new Date(appointmentAt).getTime() +
+      Number(durationMinutes) * 60000
+    )
     : null;
 
   const formatTime = (date) =>
@@ -473,9 +475,8 @@ export default function BookAppointment() {
             <div className="consultation-options">
 
               <label
-                className={`consultation-option ${
-                  consultationPreference === "online" ? "active" : ""
-                }`}
+                className={`consultation-option ${consultationPreference === "online" ? "active" : ""
+                  }`}
               >
                 <input
                   type="radio"
@@ -497,9 +498,8 @@ export default function BookAppointment() {
               </label>
 
               <label
-                className={`consultation-option ${
-                  consultationPreference === "clinic" ? "active" : ""
-                }`}
+                className={`consultation-option ${consultationPreference === "clinic" ? "active" : ""
+                  }`}
               >
                 <input
                   type="radio"
@@ -521,9 +521,8 @@ export default function BookAppointment() {
               </label>
 
               <label
-                className={`consultation-option ${
-                  consultationPreference === "both" ? "active" : ""
-                }`}
+                className={`consultation-option ${consultationPreference === "both" ? "active" : ""
+                  }`}
               >
                 <input
                   type="radio"

@@ -220,3 +220,4 @@ router.get("/messages/:messageId/photo", protect, async (req, res, next) => {
 });
 
 module.exports = router;
+module.exports.isPatientChatWindowExpired = isPatientChatWindowExpired;

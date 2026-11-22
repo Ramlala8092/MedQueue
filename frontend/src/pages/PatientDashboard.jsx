@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./PatientDashboard.css";
 
+const API_BASE = `${import.meta.env.VITE_API_URL}/api`;
+
 export default function PatientDashboard() {
   const [user, setUser] = useState(null);
   const [appointments, setAppointments] = useState([]);
@@ -26,7 +28,7 @@ export default function PatientDashboard() {
       }
 
       try {
-        const response = await fetch("/api/appointments/mine", {
+        const response = await fetch(`${API_BASE}/appointments/mine`, {
           headers: {
             Authorization: "Bearer " + token,
           },

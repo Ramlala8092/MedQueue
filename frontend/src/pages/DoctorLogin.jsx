@@ -113,6 +113,8 @@ import { useState } from "react";
 import "./DoctorLogin.css";
 import { useAuth } from "../context/AuthContext.jsx";
 
+const API_BASE = `${import.meta.env.VITE_API_URL}/api`;
+
 export default function DoctorLogin() {
   const navigate = useNavigate();
   const [error, setError] = useState("");
@@ -128,7 +130,7 @@ export default function DoctorLogin() {
     const formData = new FormData(e.currentTarget);
 
     try {
-      const response = await fetch("/api/auth/login", {
+      const response = await fetch(`${API_BASE}/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

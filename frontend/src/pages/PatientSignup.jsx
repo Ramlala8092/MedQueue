@@ -135,6 +135,8 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 
+const API_BASE = `${import.meta.env.VITE_API_URL}/api`;
+
 export default function PatientSignup() {
   const navigate = useNavigate();
   const { login } = useAuth();
@@ -161,7 +163,7 @@ export default function PatientSignup() {
     };
 
     try {
-      const response = await fetch("/api/auth/register/patient", {
+      const response = await fetch(`${API_BASE}/auth/register/patient`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

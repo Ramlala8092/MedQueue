@@ -8,6 +8,9 @@ import { io } from "socket.io-client";
 import VideoCall from "../component/VideoCall";
 import "./ChatPage.css";
 
+const API_BASE = `${import.meta.env.VITE_API_URL}/api`;
+const SOCKET_URL = import.meta.env.VITE_API_URL;
+
 export default function ChatPage() {
   const { appointmentId } = useParams();
 
@@ -24,6 +27,7 @@ export default function ChatPage() {
 
   const socketRef = useRef(null);
   const bottomRef = useRef(null);
+  const photosRef = useRef(photos);
 
   const token = localStorage.getItem("token");
 
@@ -35,6 +39,19 @@ export default function ChatPage() {
     }
   })();
 
+  // Patient chat is locked 48 hours after the appointment start time.
+  // Doctors are not restricted by this frontend condition.
+  const chatStartTime = appointment
+    ? new Date(
+      appointment.appointmentAt || appointment.createdAt
+    ).getTime()
+    : NaN;
+
+  const isPatientChatLocked =
+    user?.role === "patient" &&
+    Number.isFinite(chatStartTime) &&
+    clockNow >= chatStartTime + 48 * 60 * 60 * 1000;
+
   const loadMessages = useCallback(async () => {
     if (!token) {
       setError("Chat use karne ke liye login karein.");
@@ -44,7 +61,7 @@ export default function ChatPage() {
 
     try {
       const response = await fetch(
-        "/api/chat/" + appointmentId + "/messages",
+        `${API_BASE}/chat/${appointmentId}/messages`,
         {
           headers: {
             Authorization: "Bearer " + token,
@@ -61,7 +78,7 @@ export default function ChatPage() {
       setMessages(Array.isArray(data.messages) ? data.messages : []);
       if (data.appointment) setAppointment(data.appointment);
       // Loading history marks the messages from the other participant as read.
-      await fetch(`/api/chat/${appointmentId}/read`, {
+      await fetch(`${API_BASE}/chat/${appointmentId}/read`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -77,10 +94,19 @@ export default function ChatPage() {
     loadMessages();
   }, [loadMessages]);
 
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setClockNow(Date.now());
+    }, 60000);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
   useEffect(() => {
     if (!token || !appointmentId) return undefined;
 
-    const socket = io({
+    const socket = io(SOCKET_URL, {
       auth: { token },
       transports: ["websocket", "polling"],
     });
@@ -128,7 +154,10 @@ export default function ChatPage() {
         return [...current, message];
       });
       if (String(message.sender?._id || message.sender) !== String(user?.id || user?._id)) {
-        fetch(`/api/chat/${appointmentId}/read`, { method: "POST", headers: { Authorization: `Bearer ${token}` } }).catch(() => {});
+        fetch(`${API_BASE}/chat/${appointmentId}/read`, {
+          method: "POST",
+          headers: { Authorization: `Bearer ${token}` },
+        }).catch(() => { });
       }
     });
 
@@ -161,9 +190,7 @@ export default function ChatPage() {
         imageMessages.map(async (message) => {
           try {
             const response = await fetch(
-              "/api/chat/messages/" +
-                message._id +
-                "/photo",
+              `${API_BASE}/chat/messages/${message._id}/photo`,
               {
                 headers: {
                   Authorization: "Bearer " + token,
@@ -200,12 +227,16 @@ export default function ChatPage() {
   }, [messages, token, photos]);
 
   useEffect(() => {
+    photosRef.current = photos;
+  }, [photos]);
+
+  useEffect(() => {
     return () => {
-      Object.values(photos).forEach((url) => {
+      Object.values(photosRef.current).forEach((url) => {
         URL.revokeObjectURL(url);
       });
     };
-  }, [photos]);
+  }, []);
 
   async function sendMessage(event) {
     event.preventDefault();
@@ -277,7 +308,7 @@ export default function ChatPage() {
       formData.append("photo", file);
 
       const response = await fetch(
-        "/api/chat/" + appointmentId + "/photo",
+        `${API_BASE}/chat/${appointmentId}/photo`,
         {
           method: "POST",
           headers: {

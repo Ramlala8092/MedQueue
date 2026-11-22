@@ -234,6 +234,8 @@
 import { useState } from "react";
 import "./DoctorSignup.css";
 
+const API_BASE = `${import.meta.env.VITE_API_URL}/api`;
+
 export default function DoctorSignup() {
   const [imagePreview, setImagePreview] = useState("");
   const [message, setMessage] = useState("");
@@ -272,7 +274,7 @@ export default function DoctorSignup() {
     setLoading(true);
 
     try {
-      const response = await fetch("/api/auth/register/doctor", {
+      const response = await fetch(`${API_BASE}/auth/register/doctor`, {
         method: "POST",
         body: formData,
       });
@@ -576,11 +578,10 @@ export default function DoctorSignup() {
 
             {message && (
               <div
-                className={`doctor-signup-message ${
-                  message.startsWith("Registration submitted!")
+                className={`doctor-signup-message ${message.startsWith("Registration submitted!")
                     ? "doctor-signup-success"
                     : "doctor-signup-error"
-                }`}
+                  }`}
                 role="status"
               >
                 {message}

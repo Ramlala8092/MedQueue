@@ -1,120 +1,3 @@
-// require("dotenv").config();
-
-// const http = require("http");
-// const jwt = require("jsonwebtoken");
-// const { Server } = require("socket.io");
-// const app = require("./app");
-// const connectDB = require("./config/db");
-// const User = require("./models/User");
-// const { getConfirmedAppointmentForUser } = require("./utils/chatAccess");
-
-function isPatientChatWindowExpired(appointment) {
-  const start = new Date(appointment.appointmentAt || appointment.createdAt);
-  if (Number.isNaN(start.getTime())) return false;
-  return Date.now() >= start.getTime() + 48 * 60 * 60 * 1000;
-}
-// const ChatMessage = require("./models/ChatMessage");
-
-// const PORT = process.env.PORT || 5000;
-// const server = http.createServer(app);
-
-// const allowedOrigin = process.env.CLIENT_ORIGIN || "http://localhost:5173";
-// const io = new Server(server, {
-//   cors: {
-//     origin: allowedOrigin,
-//     methods: ["GET", "POST"],
-//   },
-// });
-
-// app.set("io", io);
-
-// io.use(async (socket, next) => {
-//   try {
-//     const token = socket.handshake.auth && socket.handshake.auth.token;
-//     if (!token) return next(new Error("Authentication required."));
-
-//     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-//     const user = await User.findById(decoded.userId).select("_id role name");
-//     if (!user || !["patient", "doctor"].includes(user.role)) {
-//       return next(new Error("Chat access denied."));
-//     }
-
-//     socket.user = user;
-//     next();
-//   } catch (_error) {
-//     next(new Error("Invalid or expired token."));
-//   }
-// });
-
-// io.on("connection", (socket) => {
-//   socket.on("chat:join", async (payload, acknowledge) => {
-//     const reply = typeof acknowledge === "function" ? acknowledge : () => {};
-//     try {
-//       const appointmentId = payload && payload.appointmentId;
-//       const appointment = await getConfirmedAppointmentForUser(appointmentId, socket.user);
-
-//       if (!appointment) {
-//         return reply({
-//           success: false,
-//           message: "Chat sirf confirmed appointment ke patient aur doctor ke liye available hai.",
-//         });
-//       }
-
-//       socket.join(`appointment:${String(appointment._id)}`);
-//       reply({ success: true });
-//     } catch (_error) {
-//       reply({ success: false, message: "Chat room join nahi ho saka." });
-//     }
-//   });
-
-//   socket.on("chat:send", async (payload, acknowledge) => {
-//     const reply = typeof acknowledge === "function" ? acknowledge : () => {};
-//     try {
-//       const appointmentId = payload && payload.appointmentId;
-//       const text = typeof (payload && payload.text) === "string"
-//         ? payload.text.trim()
-//         : "";
-
-//       if (!text || text.length > 2000) {
-//         return reply({ success: false, message: "Message 1 se 2000 characters ka hona chahiye." });
-//       }
-
-//       const appointment = await getConfirmedAppointmentForUser(appointmentId, socket.user);
-//       if (!appointment) {
-//         return reply({ success: false, message: "Is appointment ki chat access allowed nahi hai." });
-//       }
-
-//       const message = await ChatMessage.create({
-//         appointment: appointment._id,
-//         sender: socket.user._id,
-//         text,
-//       });
-//       const populated = await message.populate("sender", "name role");
-
-//       io.to(`appointment:${String(appointment._id)}`).emit("chat:message", populated);
-//       reply({ success: true, messageId: String(message._id) });
-//     } catch (_error) {
-//       reply({ success: false, message: "Message send nahi hua. Dobara try karein." });
-//     }
-//   });
-// });
-
-// async function startServer() {
-//   try {
-//     await connectDB();
-//     server.listen(PORT, () => {
-//       console.log(`MedQueue server running at http://localhost:${PORT}`);
-//     });
-//   } catch (error) {
-//     console.error("Failed to start MedQueue:", error.message);
-//     process.exit(1);
-//   }
-// }
-
-// startServer();
-
-
-
 
 
 
@@ -128,13 +11,20 @@ const { Server } = require("socket.io");
 const User = require("./models/User");
 const ChatMessage = require("./models/ChatMessage");
 const { getConfirmedAppointmentForUser } = require("./utils/chatAccess");
+const { isPatientChatWindowExpired } = require("./routes/chatRoutes");
 
 const PORT = process.env.PORT || 5000;
 const server = http.createServer(app);
 
+const allowedOrigins = (
+  process.env.CLIENT_ORIGIN || "http://localhost:5173"
+)
+  .split(",")
+  .map((origin) => origin.trim());
+
 const io = new Server(server, {
   cors: {
-    origin: process.env.CLIENT_ORIGIN || "http://localhost:5173",
+    origin: allowedOrigins,
     methods: ["GET", "POST"],
   },
 });
@@ -171,7 +61,7 @@ io.on("connection", (socket) => {
 
   // Join only a confirmed appointment belonging to this user.
   socket.on("chat:join", async (payload, acknowledge) => {
-    const reply = typeof acknowledge === "function" ? acknowledge : () => {};
+    const reply = typeof acknowledge === "function" ? acknowledge : () => { };
 
     try {
       const appointmentId = payload?.appointmentId;
@@ -200,7 +90,7 @@ io.on("connection", (socket) => {
 
   // Existing real-time text chat.
   socket.on("chat:send", async (payload, acknowledge) => {
-    const reply = typeof acknowledge === "function" ? acknowledge : () => {};
+    const reply = typeof acknowledge === "function" ? acknowledge : () => { };
 
     try {
       const appointmentId = String(payload?.appointmentId || "");
@@ -277,7 +167,7 @@ io.on("connection", (socket) => {
 
   // Caller requests a video call.
   socket.on("call:start", async (payload, acknowledge) => {
-    const reply = typeof acknowledge === "function" ? acknowledge : () => {};
+    const reply = typeof acknowledge === "function" ? acknowledge : () => { };
 
     try {
       const appointmentId = String(payload?.appointmentId || "");
@@ -318,7 +208,7 @@ io.on("connection", (socket) => {
   for (const eventName of callEvents) {
     socket.on(eventName, async (payload = {}, acknowledge) => {
       const reply =
-        typeof acknowledge === "function" ? acknowledge : () => {};
+        typeof acknowledge === "function" ? acknowledge : () => { };
 
       try {
         const appointmentId = String(payload.appointmentId || "");

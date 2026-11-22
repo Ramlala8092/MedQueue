@@ -4,7 +4,10 @@
 import { useEffect, useState } from "react";
 import "./AdminDashboard.css";
 
+const API_BASE = `${import.meta.env.VITE_API_URL}/api`;
+
 export default function AdminDashboard() {
+
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -32,7 +35,7 @@ export default function AdminDashboard() {
         throw new Error("Admin token nahi mila. Pehle admin login karo.");
       }
 
-      const response = await fetch("/api/doctors/admin/pending", {
+      const response = await fetch(`${API_BASE}/doctors/admin/pending`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -59,7 +62,7 @@ export default function AdminDashboard() {
         throw new Error("Admin token nahi mila. Pehle admin login karo.");
       }
 
-      const response = await fetch("/api/doctors/admin/all", {
+      const response = await fetch(`${API_BASE}/doctors/admin/all`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -97,7 +100,7 @@ export default function AdminDashboard() {
       }
 
       const response = await fetch(
-        `/api/doctors/admin/${doctor._id}/details`,
+        `${API_BASE}/doctors/admin/${doctor._id}/details`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -207,7 +210,7 @@ export default function AdminDashboard() {
       setError("");
 
       const response = await fetch(
-        `/api/doctors/admin/${doctorId}/${action}`,
+        `${API_BASE}/doctors/admin/${doctorId}/${action}`,
         {
           method: "PATCH",
           headers: {
@@ -253,7 +256,7 @@ export default function AdminDashboard() {
       setActionMessage("");
 
       const response = await fetch(
-        `/api/doctors/admin/${doctorId}/certificate/${type}`,
+        `${API_BASE}/doctors/admin/${doctorId}/certificate/${type}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -296,11 +299,20 @@ export default function AdminDashboard() {
     }
   }
 
+  // function getDoctorImage(profileImage) {
+  //   if (!profileImage) return "";
+
+  //   if (profileImage.startsWith("/uploads/")) {
+  //     return `http://localhost:5000${profileImage}`;
+  //   }
+
+  //   return profileImage;
+  // }
   function getDoctorImage(profileImage) {
     if (!profileImage) return "";
 
     if (profileImage.startsWith("/uploads/")) {
-      return `http://localhost:5000${profileImage}`;
+      return `${import.meta.env.VITE_API_URL}${profileImage}`;
     }
 
     return profileImage;
@@ -318,7 +330,7 @@ export default function AdminDashboard() {
       setActionMessage("");
       setAllDoctorsError("");
 
-      const response = await fetch(`/api/doctors/admin/${doctor._id}`, {
+      const response = await fetch(`${API_BASE}/doctors/admin/${doctor._id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -360,9 +372,8 @@ export default function AdminDashboard() {
 
         <button
           type="button"
-          className={`sidebar-item ${
-            activeView === "applications" ? "active" : ""
-          }`}
+          className={`sidebar-item ${activeView === "applications" ? "active" : ""
+            }`}
           onClick={openApplications}
         >
           <span>▦</span>
@@ -371,9 +382,8 @@ export default function AdminDashboard() {
 
         <button
           type="button"
-          className={`sidebar-item ${
-            activeView === "pending" ? "active" : ""
-          }`}
+          className={`sidebar-item ${activeView === "pending" ? "active" : ""
+            }`}
           onClick={openPendingVerification}
         >
           <span>◷</span>
@@ -383,9 +393,8 @@ export default function AdminDashboard() {
 
         <button
           type="button"
-          className={`sidebar-item ${
-            activeView === "totalDoctors" ? "active" : ""
-          }`}
+          className={`sidebar-item ${activeView === "totalDoctors" ? "active" : ""
+            }`}
           onClick={openTotalDoctors}
         >
           <span>♙</span>
@@ -586,7 +595,7 @@ export default function AdminDashboard() {
                               }
                             >
                               {certificateLoading ===
-                              `${doctor._id}-registration`
+                                `${doctor._id}-registration`
                                 ? "Opening..."
                                 : "View Certificate"}
                             </button>
@@ -822,287 +831,287 @@ export default function AdminDashboard() {
       {(selectedDoctorDetails ||
         doctorDetailsLoading ||
         doctorDetailsError) && (
-        <div
-          className="doctor-modal-backdrop"
-          onClick={closeDoctorDetails}
-        >
-          <section
-            className="doctor-modal"
-            role="dialog"
-            aria-modal="true"
-            aria-label="Doctor details"
-            onClick={(event) => event.stopPropagation()}
+          <div
+            className="doctor-modal-backdrop"
+            onClick={closeDoctorDetails}
           >
-            <header className="doctor-modal-header">
-              <div>
-                <p className="admin-breadcrumb">Doctor Management / Profile</p>
-                <h2>Doctor Details</h2>
-              </div>
-
-              <button
-                type="button"
-                className="doctor-modal-close"
-                aria-label="Close doctor details"
-                onClick={closeDoctorDetails}
-              >
-                ×
-              </button>
-            </header>
-
-            <div className="doctor-modal-body">
-              {doctorDetailsLoading && (
-                <div className="admin-message">
-                  Loading doctor details...
+            <section
+              className="doctor-modal"
+              role="dialog"
+              aria-modal="true"
+              aria-label="Doctor details"
+              onClick={(event) => event.stopPropagation()}
+            >
+              <header className="doctor-modal-header">
+                <div>
+                  <p className="admin-breadcrumb">Doctor Management / Profile</p>
+                  <h2>Doctor Details</h2>
                 </div>
-              )}
 
-              {doctorDetailsError && (
-                <div className="admin-message error-message">
-                  {doctorDetailsError}
-                  <button type="button" onClick={closeDoctorDetails}>
-                    Close
-                  </button>
-                </div>
-              )}
+                <button
+                  type="button"
+                  className="doctor-modal-close"
+                  aria-label="Close doctor details"
+                  onClick={closeDoctorDetails}
+                >
+                  ×
+                </button>
+              </header>
 
-              {!doctorDetailsLoading && selectedDoctor && (
-                <>
-                  <div className="doctor-modal-profile">
-                    {selectedDoctor.profileImage ? (
-                      <img
-                        className="doctor-modal-photo"
-                        src={getDoctorImage(selectedDoctor.profileImage)}
-                        alt={selectedDoctor.name || "Doctor"}
-                      />
-                    ) : (
-                      <div className="doctor-modal-photo doctor-modal-photo-placeholder">
-                        {selectedDoctor.name?.charAt(0) || "D"}
-                      </div>
-                    )}
-
-                    <div className="doctor-modal-profile-info">
-                      <h3>{selectedDoctor.name || "Doctor"}</h3>
-                      <p>
-                        {selectedDoctor.specialization ||
-                          "Specialization unavailable"}
-                      </p>
-                      <span>
-                        {selectedDoctor.qualification ||
-                          "Qualification unavailable"}
-                      </span>
-                    </div>
+              <div className="doctor-modal-body">
+                {doctorDetailsLoading && (
+                  <div className="admin-message">
+                    Loading doctor details...
                   </div>
+                )}
 
-                  <section className="doctor-modal-section">
-                    <h3>Professional Information</h3>
+                {doctorDetailsError && (
+                  <div className="admin-message error-message">
+                    {doctorDetailsError}
+                    <button type="button" onClick={closeDoctorDetails}>
+                      Close
+                    </button>
+                  </div>
+                )}
 
-                    <div className="doctor-modal-info-grid">
-                      <div>
-                        <span>Experience</span>
-                        <strong>
-                          {selectedDoctor.experienceYears ?? 0} years
-                        </strong>
-                      </div>
-                      <div>
-                        <span>Consultation Fee</span>
-                        <strong>₹{selectedDoctor.consultationFee ?? 0}</strong>
-                      </div>
-                      <div>
-                        <span>Registration Number</span>
-                        <strong>
-                          {selectedDoctor.medicalRegistrationNumber || "—"}
-                        </strong>
-                      </div> 
-                      <div>
-                        <span>Agent / Referral Code</span>
-                        <strong>{selectedDoctor.referralCode || "—"}</strong>
-                      </div>
-                      <div>
-                        <span>Email</span>
-                        <strong>{selectedDoctor.user?.email || "—"}</strong>
-                      </div>
-                      <div>
-                        <span>Phone</span>
-                        <strong>{selectedDoctor.user?.phone || "—"}</strong>
-                      </div>
-                      <div>
-                        <span>Address</span>
-                        <strong>
-                          {[
-                            selectedDoctor.address,
-                            selectedDoctor.city,
-                          ]
-                            .filter(Boolean)
-                            .join(", ") || "—"}
-                        </strong>
+                {!doctorDetailsLoading && selectedDoctor && (
+                  <>
+                    <div className="doctor-modal-profile">
+                      {selectedDoctor.profileImage ? (
+                        <img
+                          className="doctor-modal-photo"
+                          src={getDoctorImage(selectedDoctor.profileImage)}
+                          alt={selectedDoctor.name || "Doctor"}
+                        />
+                      ) : (
+                        <div className="doctor-modal-photo doctor-modal-photo-placeholder">
+                          {selectedDoctor.name?.charAt(0) || "D"}
+                        </div>
+                      )}
+
+                      <div className="doctor-modal-profile-info">
+                        <h3>{selectedDoctor.name || "Doctor"}</h3>
+                        <p>
+                          {selectedDoctor.specialization ||
+                            "Specialization unavailable"}
+                        </p>
+                        <span>
+                          {selectedDoctor.qualification ||
+                            "Qualification unavailable"}
+                        </span>
                       </div>
                     </div>
 
-                    {selectedDoctor.bio && (
-                      <p className="doctor-modal-bio">
-                        {selectedDoctor.bio}
-                      </p>
-                    )}
-                  </section>
+                    <section className="doctor-modal-section">
+                      <h3>Professional Information</h3>
 
-                  <section className="doctor-modal-section">
-                    <h3>Certificates & Documents</h3>
-
-                    <div className="doctor-modal-documents">
-                      <div className="doctor-modal-document">
+                      <div className="doctor-modal-info-grid">
                         <div>
-                          <strong>Degree Certificate</strong>
-                          <p>
-                            {selectedDoctor.degreeCertificate
-                              ? "Certificate available"
-                              : "No certificate uploaded"}
-                          </p>
+                          <span>Experience</span>
+                          <strong>
+                            {selectedDoctor.experienceYears ?? 0} years
+                          </strong>
+                        </div>
+                        <div>
+                          <span>Consultation Fee</span>
+                          <strong>₹{selectedDoctor.consultationFee ?? 0}</strong>
+                        </div>
+                        <div>
+                          <span>Registration Number</span>
+                          <strong>
+                            {selectedDoctor.medicalRegistrationNumber || "—"}
+                          </strong>
+                        </div>
+                        <div>
+                          <span>Agent / Referral Code</span>
+                          <strong>{selectedDoctor.referralCode || "—"}</strong>
+                        </div>
+                        <div>
+                          <span>Email</span>
+                          <strong>{selectedDoctor.user?.email || "—"}</strong>
+                        </div>
+                        <div>
+                          <span>Phone</span>
+                          <strong>{selectedDoctor.user?.phone || "—"}</strong>
+                        </div>
+                        <div>
+                          <span>Address</span>
+                          <strong>
+                            {[
+                              selectedDoctor.address,
+                              selectedDoctor.city,
+                            ]
+                              .filter(Boolean)
+                              .join(", ") || "—"}
+                          </strong>
+                        </div>
+                      </div>
+
+                      {selectedDoctor.bio && (
+                        <p className="doctor-modal-bio">
+                          {selectedDoctor.bio}
+                        </p>
+                      )}
+                    </section>
+
+                    <section className="doctor-modal-section">
+                      <h3>Certificates & Documents</h3>
+
+                      <div className="doctor-modal-documents">
+                        <div className="doctor-modal-document">
+                          <div>
+                            <strong>Degree Certificate</strong>
+                            <p>
+                              {selectedDoctor.degreeCertificate
+                                ? "Certificate available"
+                                : "No certificate uploaded"}
+                            </p>
+                          </div>
+
+                          {selectedDoctor.degreeCertificate && (
+                            <button
+                              type="button"
+                              className="view-certificate-button"
+                              disabled={
+                                certificateLoading ===
+                                `${selectedDoctor._id}-degree`
+                              }
+                              onClick={() =>
+                                viewCertificate(selectedDoctor._id, "degree")
+                              }
+                            >
+                              {certificateLoading ===
+                                `${selectedDoctor._id}-degree`
+                                ? "Opening..."
+                                : "View Certificate"}
+                            </button>
+                          )}
                         </div>
 
-                        {selectedDoctor.degreeCertificate && (
-                          <button
-                            type="button"
-                            className="view-certificate-button"
-                            disabled={
-                              certificateLoading ===
-                              `${selectedDoctor._id}-degree`
-                            }
-                            onClick={() =>
-                              viewCertificate(selectedDoctor._id, "degree")
-                            }
-                          >
-                            {certificateLoading ===
-                            `${selectedDoctor._id}-degree`
-                              ? "Opening..."
-                              : "View Certificate"}
-                          </button>
-                        )}
-                      </div>
+                        <div className="doctor-modal-document">
+                          <div>
+                            <strong>Registration Certificate</strong>
+                            <p>
+                              {selectedDoctor.registrationCertificate
+                                ? "Certificate available"
+                                : "No certificate uploaded"}
+                            </p>
+                          </div>
 
-                      <div className="doctor-modal-document">
-                        <div>
-                          <strong>Registration Certificate</strong>
-                          <p>
-                            {selectedDoctor.registrationCertificate
-                              ? "Certificate available"
-                              : "No certificate uploaded"}
-                          </p>
+                          {selectedDoctor.registrationCertificate && (
+                            <button
+                              type="button"
+                              className="view-certificate-button"
+                              disabled={
+                                certificateLoading ===
+                                `${selectedDoctor._id}-registration`
+                              }
+                              onClick={() =>
+                                viewCertificate(
+                                  selectedDoctor._id,
+                                  "registration"
+                                )
+                              }
+                            >
+                              {certificateLoading ===
+                                `${selectedDoctor._id}-registration`
+                                ? "Opening..."
+                                : "View Certificate"}
+                            </button>
+                          )}
                         </div>
+                      </div>
+                    </section>
 
-                        {selectedDoctor.registrationCertificate && (
-                          <button
-                            type="button"
-                            className="view-certificate-button"
-                            disabled={
-                              certificateLoading ===
-                              `${selectedDoctor._id}-registration`
-                            }
-                            onClick={() =>
-                              viewCertificate(
-                                selectedDoctor._id,
-                                "registration"
-                              )
-                            }
+                    <section className="doctor-modal-section">
+                      <h3>Patients & Appointments</h3>
+
+                      <div className="doctor-modal-summary">
+                        <div>
+                          <span>Total Patients</span>
+                          <strong>
+                            {selectedDoctorDetails.patientCount ?? 0}
+                          </strong>
+                        </div>
+                        <div>
+                          <span>Total Appointments</span>
+                          <strong>{appointments.length}</strong>
+                        </div>
+                      </div>
+
+                      {appointments.length > 0 ? (
+                        appointments.map((appointment) => (
+                          <article
+                            className="doctor-modal-appointment"
+                            key={appointment._id}
                           >
-                            {certificateLoading ===
-                            `${selectedDoctor._id}-registration`
-                              ? "Opening..."
-                              : "View Certificate"}
-                          </button>
-                        )}
-                      </div>
-                    </div>
-                  </section>
+                            <h4>
+                              Patient:{" "}
+                              {appointment.patient?.name ||
+                                "Patient information unavailable"}
+                            </h4>
 
-                  <section className="doctor-modal-section">
-                    <h3>Patients & Appointments</h3>
-
-                    <div className="doctor-modal-summary">
-                      <div>
-                        <span>Total Patients</span>
-                        <strong>
-                          {selectedDoctorDetails.patientCount ?? 0}
-                        </strong>
-                      </div>
-                      <div>
-                        <span>Total Appointments</span>
-                        <strong>{appointments.length}</strong>
-                      </div>
-                    </div>
-
-                    {appointments.length > 0 ? (
-                      appointments.map((appointment) => (
-                        <article
-                          className="doctor-modal-appointment"
-                          key={appointment._id}
-                        >
-                          <h4>
-                            Patient:{" "}
-                            {appointment.patient?.name ||
-                              "Patient information unavailable"}
-                          </h4>
-
-                          <p>Email: {appointment.patient?.email || "—"}</p>
-                          <p>Phone: {appointment.patient?.phone || "—"}</p>
-                          <p>
-                            Appointment:{" "}
-                            {appointment.appointmentAt
-                              ? new Date(
+                            <p>Email: {appointment.patient?.email || "—"}</p>
+                            <p>Phone: {appointment.patient?.phone || "—"}</p>
+                            <p>
+                              Appointment:{" "}
+                              {appointment.appointmentAt
+                                ? new Date(
                                   appointment.appointmentAt
                                 ).toLocaleString()
-                              : "Date unavailable"}
-                          </p>
+                                : "Date unavailable"}
+                            </p>
 
-                          <div className="doctor-modal-chat">
-                            <h4>Chat History</h4>
+                            <div className="doctor-modal-chat">
+                              <h4>Chat History</h4>
 
-                            {appointment.messages?.length > 0 ? (
-                              appointment.messages.map((message) => (
-                                <div
-                                  className="doctor-modal-message"
-                                  key={message._id}
-                                >
-                                  <strong>
-                                    {message.sender?.name ||
-                                      message.sender?.role ||
-                                      "User"}
-                                  </strong>
+                              {appointment.messages?.length > 0 ? (
+                                appointment.messages.map((message) => (
+                                  <div
+                                    className="doctor-modal-message"
+                                    key={message._id}
+                                  >
+                                    <strong>
+                                      {message.sender?.name ||
+                                        message.sender?.role ||
+                                        "User"}
+                                    </strong>
 
-                                  {message.text && <p>{message.text}</p>}
+                                    {message.text && <p>{message.text}</p>}
 
-                                  {message.imageFilename && (
-                                    <p>
-                                      Image attachment: {message.imageFilename}
-                                    </p>
-                                  )}
+                                    {message.imageFilename && (
+                                      <p>
+                                        Image attachment: {message.imageFilename}
+                                      </p>
+                                    )}
 
-                                  <small>
-                                    {message.createdAt
-                                      ? new Date(
+                                    <small>
+                                      {message.createdAt
+                                        ? new Date(
                                           message.createdAt
                                         ).toLocaleString()
-                                      : ""}
-                                  </small>
-                                </div>
-                              ))
-                            ) : (
-                              <p>
-                                No chat messages found for this appointment.
-                              </p>
-                            )}
-                          </div>
-                        </article>
-                      ))
-                    ) : (
-                      <p>No appointments found for this doctor.</p>
-                    )}
-                  </section>
-                </>
-              )}
-            </div>
-          </section>
-        </div>
-      )}
+                                        : ""}
+                                    </small>
+                                  </div>
+                                ))
+                              ) : (
+                                <p>
+                                  No chat messages found for this appointment.
+                                </p>
+                              )}
+                            </div>
+                          </article>
+                        ))
+                      ) : (
+                        <p>No appointments found for this doctor.</p>
+                      )}
+                    </section>
+                  </>
+                )}
+              </div>
+            </section>
+          </div>
+        )}
     </main>
   );
 }
