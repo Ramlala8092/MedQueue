@@ -2,7 +2,8 @@
 import { Link } from "react-router-dom";
 import Footer from "../component/Footer";
 import Navbar from "../component/Navbar.jsx";
-import "./Privacy.css";
+
+import "./privacy.css";
 
 const privacySections = [
   {
