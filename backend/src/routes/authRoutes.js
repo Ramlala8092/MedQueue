@@ -3,54 +3,25 @@ const express = require("express");
 const multer = require("multer");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const fs = require("fs");
-const path = require("path");
-const crypto = require("crypto");
 
 const User = require("../models/User");
 const Doctor = require("../models/Doctor");
+const cloudinary = require("../config/cloudinary");
 
 const router = express.Router();
 
-// Upload directories
-const profileDir = path.join(
-  __dirname,
-  "../../uploads/profile-images"
-);
+// ==========================================
+// MULTER CONFIGURATION
+// ==========================================
 
-const documentsDir = path.join(
-  __dirname,
-  "../../uploads/private-documents"
-);
+const storage = multer.memoryStorage();
 
-fs.mkdirSync(profileDir, { recursive: true });
-fs.mkdirSync(documentsDir, { recursive: true });
-
-// Multer storage
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    if (file.fieldname === "profileImage") {
-      cb(null, profileDir);
-    } else {
-      cb(null, documentsDir);
-    }
-  },
-
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname).toLowerCase();
-    const safeName = `${Date.now()}-${crypto.randomUUID()}${ext}`;
-    cb(null, safeName);
-  },
-});
-
-// File upload validation
 const upload = multer({
   storage,
   limits: {
     fileSize: 5 * 1024 * 1024,
     files: 3,
   },
-
   fileFilter: (req, file, cb) => {
     const isImage = file.mimetype.startsWith("image/");
     const isPdf = file.mimetype === "application/pdf";
@@ -68,14 +39,56 @@ const upload = multer({
       return cb(null, true);
     }
 
-    cb(new Error("Invalid file type."));
+    return cb(new Error("Invalid file type."));
   },
 });
 
-// ==================================================
+// ==========================================
+// CLOUDINARY UPLOAD HELPER
+// ==========================================
+
+const uploadToCloudinary = (file, options = {}) => {
+  return new Promise((resolve, reject) => {
+    const uploadStream = cloudinary.uploader.upload_stream(
+      {
+        folder: options.folder,
+        resource_type: "image",
+        type: options.type || "upload",
+      },
+      (error, result) => {
+        if (error) {
+          return reject(error);
+        }
+
+        resolve(result);
+      }
+    );
+
+    uploadStream.end(file.buffer);
+  });
+};
+
+// ==========================================
+// CLOUDINARY CLEANUP HELPER
+// ==========================================
+
+const deleteCloudinaryAssets = async (assets) => {
+  for (const asset of assets) {
+    try {
+      await cloudinary.uploader.destroy(asset.publicId, {
+        resource_type: "image",
+        type: asset.type,
+      });
+    } catch (error) {
+      console.error("Cloudinary cleanup error:", error);
+    }
+  }
+};
+
+// ==========================================
 // DOCTOR SIGNUP
 // POST /api/auth/register/doctor
-// ==================================================
+// ==========================================
 
 router.post(
   "/register/doctor",
@@ -86,6 +99,7 @@ router.post(
   ]),
   async (req, res) => {
     let createdUserId = null;
+    const uploadedAssets = [];
 
     try {
       const {
@@ -103,6 +117,7 @@ router.post(
 
       const files = req.files || {};
 
+      // Required field validation
       if (
         !name?.trim() ||
         !email?.trim() ||
@@ -150,6 +165,7 @@ router.post(
       const normalizedEmail = email.trim().toLowerCase();
       const normalizedRegistration = medicalRegistrationNumber.trim();
 
+      // Check duplicate email
       const existingUser = await User.findOne({
         email: normalizedEmail,
       });
@@ -161,6 +177,7 @@ router.post(
         });
       }
 
+      // Check duplicate medical registration number
       const existingRegistration = await Doctor.findOne({
         medicalRegistrationNumber: normalizedRegistration,
       });
@@ -172,8 +189,52 @@ router.post(
         });
       }
 
+      // Upload public profile image
+      const profileUpload = await uploadToCloudinary(
+        files.profileImage[0],
+        {
+          folder: "medqueue/profile-images",
+          type: "upload",
+        }
+      );
+
+      uploadedAssets.push({
+        publicId: profileUpload.public_id,
+        type: "upload",
+      });
+
+      // Upload private degree certificate
+      const degreeUpload = await uploadToCloudinary(
+        files.degreeCertificate[0],
+        {
+          folder: "medqueue/private-certificates",
+          type: "authenticated",
+        }
+      );
+
+      uploadedAssets.push({
+        publicId: degreeUpload.public_id,
+        type: "authenticated",
+      });
+
+      // Upload private registration certificate
+      const registrationUpload = await uploadToCloudinary(
+        files.registrationCertificate[0],
+        {
+          folder: "medqueue/private-certificates",
+          type: "authenticated",
+        }
+      );
+
+      uploadedAssets.push({
+        publicId: registrationUpload.public_id,
+        type: "authenticated",
+      });
+
+      // Hash password
       const passwordHash = await bcrypt.hash(password, 12);
 
+      // Create doctor user
       const user = await User.create({
         name: name.trim(),
         email: normalizedEmail,
@@ -183,6 +244,7 @@ router.post(
 
       createdUserId = user._id;
 
+      // Create doctor profile
       await Doctor.create({
         user: user._id,
         name: name.trim(),
@@ -192,14 +254,29 @@ router.post(
         consultationFee: fee,
         address: address.trim(),
 
-        profileImage: `/uploads/profile-images/${files.profileImage[0].filename}`,
-        degreeCertificate: files.degreeCertificate[0].filename,
+        // Public profile image
+        profileImage: profileUpload.secure_url,
+        profileImagePublicId: profileUpload.public_id,
+
+        // Private degree certificate
+        degreeCertificate: degreeUpload.public_id,
+        degreeCertificatePublicId: degreeUpload.public_id,
+        degreeCertificateFormat: degreeUpload.format || "",
+
         medicalRegistrationNumber: normalizedRegistration,
-        registrationCertificate: files.registrationCertificate[0].filename,
+
+        // Private registration certificate
+        registrationCertificate: registrationUpload.public_id,
+        registrationCertificatePublicId: registrationUpload.public_id,
+        registrationCertificateFormat: registrationUpload.format || "",
 
         verificationStatus: "pending",
         isVerified: false,
-        referralCode: typeof referralCode === "string" ? referralCode.trim().toUpperCase() : "",
+
+        referralCode:
+          typeof referralCode === "string"
+            ? referralCode.trim().toUpperCase()
+            : "",
       });
 
       return res.status(201).json({
@@ -210,7 +287,7 @@ router.post(
     } catch (error) {
       console.error("Doctor registration error:", error);
 
-      // Remove the user if doctor creation fails
+      // Remove user if doctor creation failed
       if (createdUserId) {
         try {
           await User.findByIdAndDelete(createdUserId);
@@ -218,6 +295,9 @@ router.post(
           console.error("User cleanup failed:", cleanupError);
         }
       }
+
+      // Remove uploaded Cloudinary files
+      await deleteCloudinaryAssets(uploadedAssets);
 
       if (error.code === 11000) {
         return res.status(409).json({
@@ -241,18 +321,20 @@ router.post(
   }
 );
 
-
-
-
-/* DOCTOR AND PATIENT LOGIN
-   POST /api/auth/login
-*/
+// ==========================================
+// DOCTOR AND PATIENT LOGIN
+// POST /api/auth/login
+// ==========================================
 
 router.post("/login", async (req, res) => {
   try {
     const { email, password, role } = req.body;
 
-    if (!email?.trim() || !password || !["doctor", "patient"].includes(role)) {
+    if (
+      !email?.trim() ||
+      !password ||
+      !["doctor", "patient"].includes(role)
+    ) {
       return res.status(400).json({
         success: false,
         message: "Email, password and valid account type are required.",
@@ -290,16 +372,22 @@ router.post("/login", async (req, res) => {
       });
     }
 
-    let doctor = null;
-
+    // Doctor approval check
     if (role === "doctor") {
-      doctor = await Doctor.findOne({ user: user._id });
+      const doctor = await Doctor.findOne({
+        user: user._id,
+      });
 
-      if (!doctor || doctor.verificationStatus !== "approved" ||
-          !doctor.isVerified || doctor.isActive === false) {
+      if (
+        !doctor ||
+        doctor.verificationStatus !== "approved" ||
+        !doctor.isVerified ||
+        doctor.isActive === false
+      ) {
         return res.status(403).json({
           success: false,
-          message: "Your doctor account is pending approval or is not active.",
+          message:
+            "Your doctor account is pending approval or is not active.",
         });
       }
     }
@@ -307,7 +395,9 @@ router.post("/login", async (req, res) => {
     const token = jwt.sign(
       { userId: user._id.toString() },
       process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRES_IN || "1d" }
+      {
+        expiresIn: process.env.JWT_EXPIRES_IN || "1d",
+      }
     );
 
     return res.status(200).json({
@@ -331,10 +421,10 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// ==================================================
+// ==========================================
 // ADMIN LOGIN
 // POST /api/auth/admin/login
-// ==================================================
+// ==========================================
 
 router.post("/admin/login", async (req, res) => {
   try {
@@ -348,8 +438,6 @@ router.post("/admin/login", async (req, res) => {
     }
 
     if (!process.env.JWT_SECRET) {
-      console.error("JWT_SECRET is missing from environment variables.");
-
       return res.status(500).json({
         success: false,
         message: "Server configuration error.",
@@ -409,17 +497,21 @@ router.post("/admin/login", async (req, res) => {
   }
 });
 
-
-
-/* PATIENT SIGNUP
-   POST /api/auth/register/patient
-*/
+// ==========================================
+// PATIENT SIGNUP
+// POST /api/auth/register/patient
+// ==========================================
 
 router.post("/register/patient", async (req, res) => {
   try {
     const { name, email, password, phone } = req.body;
 
-    if (!name?.trim() || !email?.trim() || !password || !phone?.trim()) {
+    if (
+      !name?.trim() ||
+      !email?.trim() ||
+      !password ||
+      !phone?.trim()
+    ) {
       return res.status(400).json({
         success: false,
         message: "Please fill in all fields.",
@@ -430,6 +522,13 @@ router.post("/register/patient", async (req, res) => {
       return res.status(400).json({
         success: false,
         message: "Password must be at least 8 characters.",
+      });
+    }
+
+    if (!process.env.JWT_SECRET) {
+      return res.status(500).json({
+        success: false,
+        message: "Server configuration error.",
       });
     }
 
@@ -448,10 +547,6 @@ router.post("/register/patient", async (req, res) => {
 
     const passwordHash = await bcrypt.hash(password, 12);
 
-    if (!process.env.JWT_SECRET) {
-      return res.status(500).json({ success: false, message: "Server configuration error." });
-    }
-
     const user = await User.create({
       name: name.trim(),
       email: normalizedEmail,
@@ -463,7 +558,9 @@ router.post("/register/patient", async (req, res) => {
     const token = jwt.sign(
       { userId: user._id.toString() },
       process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRES_IN || "1d" }
+      {
+        expiresIn: process.env.JWT_EXPIRES_IN || "1d",
+      }
     );
 
     return res.status(201).json({
@@ -495,8 +592,11 @@ router.post("/register/patient", async (req, res) => {
   }
 });
 
+// ==========================================
+// LOGGED-IN DOCTOR PROFILE
+// GET /api/auth/doctor/profile
+// ==========================================
 
-// GET: Logged-in doctor's profile
 router.get("/doctor/profile", async (req, res) => {
   try {
     const authHeader = req.headers.authorization;
@@ -508,14 +608,14 @@ router.get("/doctor/profile", async (req, res) => {
       });
     }
 
-    const token = authHeader.split(" ")[1];
-
     if (!process.env.JWT_SECRET) {
       return res.status(500).json({
         success: false,
         message: "Server configuration error.",
       });
     }
+
+    const token = authHeader.split(" ")[1];
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
@@ -545,10 +645,21 @@ router.get("/doctor/profile", async (req, res) => {
       });
     }
 
+    // Never expose private certificate IDs in doctor profile response
+    const doctorData = doctor.toObject();
+
+    delete doctorData.degreeCertificate;
+    delete doctorData.degreeCertificatePublicId;
+    delete doctorData.degreeCertificateFormat;
+
+    delete doctorData.registrationCertificate;
+    delete doctorData.registrationCertificatePublicId;
+    delete doctorData.registrationCertificateFormat;
+
     return res.status(200).json({
       success: true,
       doctor: {
-        ...doctor.toObject(),
+        ...doctorData,
         name: doctor.name || user.name,
         email: user.email,
         phone: user.phone || "",
@@ -574,5 +685,8 @@ router.get("/doctor/profile", async (req, res) => {
   }
 });
 
+// ==========================================
+// EXPORT ROUTER
+// ==========================================
 
 module.exports = router;

@@ -87,6 +87,22 @@ router.get("/home/random", async (req, res) => {
         },
       },
       { $sample: { size: 6 } },
+      {
+        $project: {
+          _id: 1,
+          name: 1,
+          specialization: 1,
+          qualification: 1,
+          experienceYears: 1,
+          consultationFee: 1,
+          address: 1,
+          city: 1,
+          bio: 1,
+          profileImage: 1,
+          isOnBreak: 1,
+          breakMessage: 1
+        }
+      },
     ]);
 
     res.status(200).json({
@@ -284,11 +300,11 @@ router.get(
 
       const messages = appointmentIds.length
         ? await ChatMessage.find({
-            appointment: { $in: appointmentIds },
-          })
-            .populate("sender", "name role")
-            .sort({ createdAt: 1 })
-            .lean()
+          appointment: { $in: appointmentIds },
+        })
+          .populate("sender", "name role")
+          .sort({ createdAt: 1 })
+          .lean()
         : [];
 
       const messagesByAppointment = new Map();
@@ -503,6 +519,8 @@ router.patch(
 );
 
 // Admin: view a pending or approved doctor's certificate.
+
+// Admin: securely view a pending or approved doctor's certificate.
 router.get(
   "/admin/:id/certificate/:type",
   protect,
@@ -519,13 +537,19 @@ router.get(
       }
 
       const certificateFields = {
-        degree: "degreeCertificate",
-        registration: "registrationCertificate",
+        degree: {
+          publicId: "degreeCertificatePublicId",
+          format: "degreeCertificateFormat",
+        },
+        registration: {
+          publicId: "registrationCertificatePublicId",
+          format: "registrationCertificateFormat",
+        },
       };
 
-      const field = certificateFields[type];
+      const selected = certificateFields[type];
 
-      if (!field) {
+      if (!selected) {
         return res.status(400).json({
           success: false,
           message: "Invalid certificate type.",
@@ -534,94 +558,53 @@ router.get(
 
       const doctor = await Doctor.findOne({
         _id: id,
-        verificationStatus: {
-          $in: ["pending", "approved"],
-        },
-      }).select(field);
+        verificationStatus: { $in: ["pending", "approved"] },
+      }).select(
+        `${selected.publicId} ${selected.format}`
+      );
 
-      if (!doctor || !doctor[field]) {
+      if (!doctor) {
+        return res.status(404).json({
+          success: false,
+          message: "Doctor not found.",
+        });
+      }
+
+      const publicId = doctor[selected.publicId];
+      const format = doctor[selected.format];
+
+      if (!publicId || !format) {
         return res.status(404).json({
           success: false,
           message: "Certificate not found.",
         });
       }
 
-      const storedPath = String(doctor[field]).replace(/\\/g, "/");
-      const filename = path.basename(storedPath);
+      const cloudinary = require("../config/cloudinary");
 
-      if (
-        !filename ||
-        filename === "." ||
-        filename === ".." ||
-        filename.includes("\0")
-      ) {
-        return res.status(400).json({
-          success: false,
-          message: "Invalid certificate filename.",
-        });
-      }
-
-      if (
-        storedPath.includes("/uploads/") &&
-        !storedPath.includes("/uploads/private-documents/")
-      ) {
-        return res.status(400).json({
-          success: false,
-          message: "Invalid certificate path.",
-        });
-      }
-
-      const filePath = path.resolve(
-        PRIVATE_DOCUMENTS_DIR,
-        filename
+      const signedUrl = cloudinary.utils.private_download_url(
+        publicId,
+        format,
+        {
+          resource_type: "image",
+          type: "authenticated",
+          expires_at: Math.floor(Date.now() / 1000) + 300,
+        }
       );
 
-      if (
-        !filePath.startsWith(PRIVATE_DOCUMENTS_DIR + path.sep)
-      ) {
-        return res.status(400).json({
-          success: false,
-          message: "Invalid certificate path.",
-        });
-      }
-
-      const contentType = mime.lookup(filename);
-
-      if (
-        ![
-          "application/pdf",
-          "image/jpeg",
-          "image/png",
-          "image/webp",
-        ].includes(contentType)
-      ) {
-        return res.status(415).json({
-          success: false,
-          message: "Unsupported certificate format.",
-        });
-      }
-
-      await fs.promises.access(filePath);
-
-      res.setHeader("Content-Type", contentType);
-      res.setHeader("Content-Disposition", "inline");
-      res.setHeader("X-Content-Type-Options", "nosniff");
       res.setHeader("Cache-Control", "private, no-store");
+      res.setHeader("X-Content-Type-Options", "nosniff");
 
-      return res.sendFile(filePath);
+      return res.status(200).json({
+        success: true,
+        certificateUrl: signedUrl,
+      });
     } catch (error) {
-      if (error.code === "ENOENT") {
-        return res.status(404).json({
-          success: false,
-          message: "Certificate file not found.",
-        });
-      }
-
       console.error("Certificate viewing error:", error);
 
       return res.status(500).json({
         success: false,
-        message: "Unable to open certificate.",
+        message: "Unable to generate certificate link.",
       });
     }
   }

@@ -243,61 +243,63 @@ export default function AdminDashboard() {
     }
   }
 
-  async function viewCertificate(doctorId, type) {
-    if (!token) {
-      setActionMessage("Admin token nahi mila. Pehle admin login karo.");
-      return;
-    }
-
-    const loadingKey = `${doctorId}-${type}`;
-
-    try {
-      setCertificateLoading(loadingKey);
-      setActionMessage("");
-
-      const response = await fetch(
-        `${API_BASE}/doctors/admin/${doctorId}/certificate/${type}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-
-      if (!response.ok) {
-        let message = "Certificate open nahi ho saka.";
-
-        try {
-          const result = await response.json();
-          message = result.message || message;
-        } catch {
-          // Default error message use hoga.
-        }
-
-        throw new Error(message);
-      }
-
-      const blob = await response.blob();
-      const objectUrl = URL.createObjectURL(blob);
-      const newWindow = window.open(objectUrl, "_blank");
-
-      if (!newWindow) {
-        URL.revokeObjectURL(objectUrl);
-        throw new Error(
-          "Browser mein pop-ups allow karo, phir dobara try karo."
-        );
-      }
-
-      const cleanup = () => URL.revokeObjectURL(objectUrl);
-
-      newWindow.addEventListener("beforeunload", cleanup, { once: true });
-      window.setTimeout(cleanup, 5 * 60 * 1000);
-    } catch (err) {
-      setActionMessage(
-        err.message || "Certificate open karte waqt error aaya."
-      );
-    } finally {
-      setCertificateLoading("");
-    }
+  
+async function viewCertificate(doctorId, type) {
+  if (!token) {
+    setActionMessage("Admin token nahi mila. Pehle admin login karo.");
+    return;
   }
+
+  const loadingKey = `${doctorId}-${type}`;
+  let newWindow = null;
+
+  try {
+    setCertificateLoading(loadingKey);
+    setActionMessage("");
+
+    // Open a blank tab immediately to avoid popup blocking.
+    newWindow = window.open("about:blank", "_blank");
+
+    if (!newWindow) {
+      throw new Error(
+        "Browser mein pop-ups allow karo, phir dobara try karo."
+      );
+    }
+
+    newWindow.opener = null;
+
+    const response = await fetch(
+      `${API_BASE}/doctors/admin/${doctorId}/certificate/${type}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        result.message || "Certificate open nahi ho saka."
+      );
+    }
+
+    if (!result.certificateUrl) {
+      throw new Error("Certificate URL nahi mila.");
+    }
+
+    newWindow.location.href = result.certificateUrl;
+  } catch (err) {
+    if (newWindow && !newWindow.closed) {
+      newWindow.close();
+    }
+
+    setActionMessage(
+      err.message || "Certificate open karte waqt error aaya."
+    );
+  } finally {
+    setCertificateLoading("");
+  }
+}
 
   // function getDoctorImage(profileImage) {
   //   if (!profileImage) return "";
