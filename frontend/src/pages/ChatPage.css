@@ -173,7 +173,7 @@
   background: white;
 }
 
-.chat-compose > input[type="text"] {
+.chat-compose>input[type="text"] {
   min-width: 0;
   flex: 1;
   padding: 13px 14px;
@@ -184,7 +184,7 @@
   font-size: 14px;
 }
 
-.chat-compose > input[type="text"]:focus {
+.chat-compose>input[type="text"]:focus {
   border-color: #078779;
 }
 
@@ -282,7 +282,7 @@
     padding: 10px;
   }
 
-  .chat-compose > input[type="text"] {
+  .chat-compose>input[type="text"] {
     padding: 12px 9px;
     font-size: 13px;
   }
@@ -323,7 +323,7 @@
   display: none;
 }
 
-.video-call-panel > button {
+.video-call-panel>button {
   min-height: 42px;
   padding: 11px 22px;
   border: none;
@@ -335,11 +335,11 @@
   cursor: pointer;
 }
 
-.video-call-panel > button:hover {
+.video-call-panel>button:hover {
   background: #0b766e;
 }
 
-.video-call-panel > button:disabled {
+.video-call-panel>button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
@@ -357,7 +357,7 @@
   width: 100%;
 }
 
-.video-call-grid > div {
+.video-call-grid>div {
   min-width: 0;
 }
 
@@ -674,4 +674,710 @@
     width: 58px;
     height: 58px;
   }
+}
+
+
+/* ================================
+   MEDQUEUE VIDEO CALL UI
+================================ */
+
+.video-call-panel {
+  width: 100%;
+  margin-top: 16px;
+}
+
+.video-call-error {
+  color: #ff6b6b;
+  background: #2b1519;
+  padding: 10px 14px;
+  border-radius: 10px;
+  margin: 10px 0;
+  font-size: 14px;
+}
+
+/* Doctor start call */
+
+.vc-start-area {
+  display: flex;
+  justify-content: center;
+  padding: 16px 0;
+}
+
+.vc-start-button {
+  border: none;
+  border-radius: 12px;
+  padding: 13px 24px;
+  background: #16a36a;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.vc-start-button:hover {
+  background: #128653;
+  transform: translateY(-2px);
+}
+
+/* Patient waiting */
+
+.vc-patient-waiting {
+  text-align: center;
+  padding: 20px;
+  color: #d5d9e2;
+}
+
+.vc-notification-button {
+  border: 1px solid #16a36a;
+  background: transparent;
+  color: #16c784;
+  padding: 11px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 12px;
+}
+
+/* Incoming call screen */
+
+.vc-incoming-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  color: white;
+  text-align: center;
+  background:
+    radial-gradient(circle at center, #183c36 0%, #101c20 45%, #070b12 100%);
+  padding: 24px;
+}
+
+.vc-incoming-avatar {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #16a36a;
+  font-size: 42px;
+  font-weight: 700;
+  box-shadow: 0 0 45px rgba(22, 163, 106, 0.4);
+}
+
+.vc-incoming-label {
+  color: #b9c5c4;
+  font-size: 15px;
+}
+
+.vc-incoming-actions {
+  display: flex;
+  align-items: center;
+  gap: 35px;
+  margin-top: 25px;
+}
+
+.vc-accept-button,
+.vc-reject-button {
+  width: 66px;
+  height: 66px;
+  border: none;
+  border-radius: 50%;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.vc-accept-button {
+  background: #16b86f;
+}
+
+.vc-reject-button {
+  background: #e53945;
+}
+
+/* Full-screen video */
+
+.vc-fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background: #070b12;
+  color: white;
+}
+
+.vc-remote-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #10151e;
+}
+
+.vc-top-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  padding: 22px 25px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, .65), transparent);
+}
+
+.vc-live-dot {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #21d67b;
+  margin-right: 8px;
+  box-shadow: 0 0 10px #21d67b;
+}
+
+.vc-local-window {
+  position: absolute;
+  z-index: 3;
+  right: 22px;
+  top: 85px;
+  width: 150px;
+  height: 205px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #202733;
+  border: 2px solid rgba(255, 255, 255, .25);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, .35);
+}
+
+.vc-local-window video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Bottom call controls */
+
+.vc-bottom-controls {
+  position: absolute;
+  z-index: 4;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 35px 20px 45px;
+  background: linear-gradient(transparent, rgba(0, 0, 0, .8));
+}
+
+.vc-control {
+  width: 56px;
+  height: 56px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .2);
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+}
+
+.vc-disabled {
+  background: #e53945;
+}
+
+.vc-end-call {
+  background: #e53945;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: none;
+  color: white;
+  font-size: 23px;
+  cursor: pointer;
+}
+
+.vc-control:hover,
+.vc-end-call:hover,
+.vc-accept-button:hover,
+.vc-reject-button:hover {
+  filter: brightness(1.15);
+  transform: scale(1.05);
+}
+
+/* Mobile responsive */
+
+@media (max-width: 600px) {
+  .vc-top-bar {
+    padding: 16px;
+  }
+
+  .vc-local-window {
+    width: 105px;
+    height: 150px;
+    right: 12px;
+    top: 75px;
+  }
+
+  .vc-bottom-controls {
+    gap: 13px;
+    padding: 25px 12px 35px;
+  }
+
+  .vc-control {
+    width: 49px;
+    height: 49px;
+  }
+
+  .vc-end-call {
+    width: 58px;
+    height: 58px;
+  }
+}
+
+
+/* ===== MedQueue Compact Video Call Button ===== */
+
+.video-call-panel {
+  width: 100%;
+  margin: 0;
+}
+
+.vc-start-area {
+  display: flex;
+  justify-content: flex-end;
+  padding: 5px 12px;
+  margin: 0;
+}
+
+.vc-start-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 9px 15px;
+  border: none;
+  border-radius: 9px;
+  background: #0d9f6e;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: .2s ease;
+}
+
+.vc-start-button svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.vc-start-button:hover {
+  background: #087e57;
+  transform: translateY(-1px);
+}
+
+.vc-start-button:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+/* Patient has no idle call section */
+.vc-patient-waiting {
+  display: none !important;
+}
+
+/* ===== Full Screen Call ===== */
+
+.vc-fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
+  background: #080c12;
+  color: #fff;
+  overflow: hidden;
+}
+
+.vc-remote-video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #080c12;
+}
+
+.vc-top-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 28px;
+  background: linear-gradient(to bottom,
+      rgba(0, 0, 0, .7),
+      transparent);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.vc-live-dot {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  margin-right: 9px;
+  border-radius: 50%;
+  background: #19d88b;
+  box-shadow: 0 0 12px #19d88b;
+}
+
+.vc-secure-label {
+  font-size: 13px;
+  color: #d0d8df;
+  font-weight: 500;
+}
+
+/* Local camera preview */
+
+.vc-local-window {
+  position: absolute;
+  top: 85px;
+  right: 25px;
+  z-index: 4;
+  width: 155px;
+  height: 205px;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, .25);
+  border-radius: 15px;
+  background: #1b2530;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, .4);
+}
+
+.vc-local-window video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.vc-local-window span {
+  position: absolute;
+  left: 9px;
+  bottom: 8px;
+  font-size: 11px;
+  color: white;
+  text-shadow: 0 1px 4px #000;
+}
+
+/* Bottom controls */
+
+.vc-bottom-controls {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 22px;
+  padding: 35px 15px 45px;
+  background: linear-gradient(transparent,
+      rgba(0, 0, 0, .8));
+}
+
+.vc-control,
+.vc-end-call {
+  width: 66px;
+  height: 66px;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  color: #fff;
+  cursor: pointer;
+  transition: .2s ease;
+}
+
+.vc-control {
+  background: rgba(255, 255, 255, .18);
+  backdrop-filter: blur(12px);
+}
+
+.vc-control svg,
+.vc-end-call svg {
+  width: 23px;
+  height: 23px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.vc-control span,
+.vc-end-call span {
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.vc-control:hover {
+  background: rgba(255, 255, 255, .3);
+  transform: scale(1.06);
+}
+
+.vc-control.vc-disabled {
+  background: #d83d4c;
+}
+
+.vc-end-call {
+  width: 72px;
+  height: 72px;
+  background: #e53945;
+}
+
+.vc-end-call:hover {
+  background: #c91f31;
+  transform: scale(1.07);
+}
+
+/* Incoming call */
+
+.vc-incoming-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 10001;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  padding: 20px;
+  color: white;
+  text-align: center;
+  background: radial-gradient(circle at center,
+      #174b3b,
+      #101c20 55%,
+      #070b12);
+}
+
+.vc-incoming-avatar {
+  width: 105px;
+  height: 105px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #119b6b;
+  font-size: 40px;
+  box-shadow: 0 0 35px rgba(17, 155, 107, .4);
+}
+
+.vc-incoming-actions {
+  display: flex;
+  gap: 25px;
+  margin-top: 25px;
+}
+
+.vc-accept-button,
+.vc-reject-button {
+  min-width: 115px;
+  padding: 14px 18px;
+  border: none;
+  border-radius: 30px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.vc-accept-button {
+  background: #12a96d;
+}
+
+.vc-reject-button {
+  background: #e53945;
+}
+
+/* Error message */
+
+.video-call-error {
+  margin: 5px 12px;
+  padding: 9px 12px;
+  border-radius: 8px;
+  background: #fff0f0;
+  color: #c62828;
+  font-size: 13px;
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+  .vc-start-area {
+    padding: 4px 8px;
+  }
+
+  .vc-start-button {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  .vc-local-window {
+    top: 75px;
+    right: 12px;
+    width: 105px;
+    height: 150px;
+  }
+
+  .vc-bottom-controls {
+    gap: 16px;
+    padding-bottom: 35px;
+  }
+
+  .vc-control,
+  .vc-end-call {
+    width: 58px;
+    height: 58px;
+  }
+
+  .vc-end-call {
+    width: 64px;
+    height: 64px;
+  }
+}
+
+
+/* Video call controls - bottom center */
+
+.vc-bottom-controls {
+  position: absolute !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+
+  display: flex !important;
+  flex-direction: row;
+  justify-content: center !important;
+  align-items: center !important;
+
+  gap: 24px;
+  width: 100%;
+  padding: 25px 20px 45px !important;
+  box-sizing: border-box;
+
+  background: linear-gradient(to bottom,
+      transparent,
+      rgba(0, 0, 0, 0.8));
+}
+
+.vc-control {
+  flex: 0 0 62px;
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+}
+
+.vc-end-call {
+  flex: 0 0 68px;
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: #e53945;
+}
+
+@media (max-width: 600px) {
+  .vc-bottom-controls {
+    gap: 18px;
+    padding-bottom: 35px !important;
+  }
+}
+
+
+/* FINAL FIX - VIDEO CALL BUTTONS CENTER */
+
+.vc-fullscreen .vc-bottom-controls {
+  position: absolute !important;
+
+  left: 0 !important;
+  right: 0 !important;
+  bottom: max(30px, env(safe-area-inset-bottom)) !important;
+
+  width: 100% !important;
+  max-width: 100% !important;
+
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: center !important;
+  align-items: center !important;
+
+  transform: none !important;
+  margin: 0 !important;
+
+  gap: 24px !important;
+  padding: 20px !important;
+  box-sizing: border-box !important;
+
+  z-index: 10005 !important;
+}
+
+.vc-fullscreen .vc-control,
+.vc-fullscreen .vc-end-call {
+  position: static !important;
+  flex: 0 0 62px !important;
+  width: 62px !important;
+  height: 62px !important;
+  margin: 0 !important;
+}
+
+.vc-fullscreen .vc-end-call {
+  flex-basis: 70px !important;
+  width: 70px !important;
+  height: 70px !important;
+}
+
+@media (max-width: 600px) {
+  .vc-fullscreen .vc-bottom-controls {
+    gap: 18px !important;
+    bottom: 25px !important;
+  }
+}
+
+.vc-local-window {
+  position: absolute;
+  top: 85px;
+  right: 25px;
+  z-index: 10;
+  width: 155px;
+  height: 205px;
+  overflow: hidden;
+  background: #202733;
+  border: 2px solid rgba(255, 255, 255, .3);
+  border-radius: 15px;
+}
+
+.vc-local-window video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scaleX(-1);
+  background: #202733;
 }

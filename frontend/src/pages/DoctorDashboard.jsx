@@ -14,6 +14,7 @@ const menuItems = [
   { id: "requests", icon: "◷", label: "Patient Requests" },
   { id: "patient-chat", icon: "✉", label: "Patient Chat" },
   { id: "appointments", icon: "▦", label: "Appointments" },
+  { id: "queue", icon: "☷", label: "Today Queue" },
 ];
 
 function formatDate(date) {
@@ -25,6 +26,32 @@ function formatDate(date) {
     year: "numeric",
   });
 }
+
+
+function getIndiaDateKey(date) {
+  if (!date) return "";
+
+  const parsedDate = new Date(date);
+  if (Number.isNaN(parsedDate.getTime())) return "";
+
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Kolkata",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(parsedDate);
+
+  const values = {};
+
+  parts.forEach((part) => {
+    if (part.type !== "literal") {
+      values[part.type] = part.value;
+    }
+  });
+
+  return `${values.year}-${values.month}-${values.day}`;
+}
+
 
 function Detail({ label, value }) {
   return (
@@ -51,6 +78,7 @@ export default function DoctorDashboard() {
   const [loading, setLoading] = useState(true);
   const [appointmentsLoading, setAppointmentsLoading] = useState(true);
   const [updatingId, setUpdatingId] = useState("");
+  const [treatmentUpdatingId, setTreatmentUpdatingId] = useState("");
   const [error, setError] = useState("");
   const [appointmentError, setAppointmentError] = useState("");
   const [notice, setNotice] = useState("");
@@ -259,6 +287,46 @@ export default function DoctorDashboard() {
     }
   }
 
+  async function updateTreatmentStatus(appointmentId, treatmentStatus) {
+    setTreatmentUpdatingId(appointmentId);
+    setAppointmentError("");
+    setNotice("");
+
+    try {
+      const response = await fetch(
+        `${API_BASE}/appointments/${appointmentId}/treatment`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ treatmentStatus }),
+        }
+      );
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || "Queue status update nahi hua.");
+      }
+
+      setNotice(
+        treatmentStatus === "in_consultation"
+          ? "Consultation started."
+          : treatmentStatus === "completed"
+            ? "Patient consultation completed."
+            : "Patient moved back to waiting queue."
+      );
+
+      await loadAppointments();
+    } catch (err) {
+      setAppointmentError(err.message || "Queue status update nahi hua.");
+    } finally {
+      setTreatmentUpdatingId("");
+    }
+  }
+
   async function toggleDoctorSetting(setting, value) {
     const endpoint = setting === "isAutoConfirm"
       ? `${API_BASE}/doctors/settings/auto-confirm`
@@ -359,17 +427,41 @@ export default function DoctorDashboard() {
     (appointment) => appointment.status === "confirmed"
   );
 
+
+  const todayDateKey = getIndiaDateKey(new Date());
+
   const todayAppointments = appointments.filter((appointment) => {
-    const date = new Date(appointment.appointmentAt || appointment.createdAt);
-    const now = new Date();
-    return !Number.isNaN(date.getTime()) &&
-      date.getFullYear() === now.getFullYear() &&
-      date.getMonth() === now.getMonth() &&
-      date.getDate() === now.getDate() &&
-      ["confirmed", "completed"].includes(appointment.status);
+    return (
+      ["confirmed", "completed"].includes(appointment.status) &&
+      getIndiaDateKey(appointment.appointmentAt) === todayDateKey
+    );
   });
+
   const todayPatientCount = todayAppointments.length;
-  const todayEstimatedRevenue = todayPatientCount * Number(doctor?.consultationFee || 0);
+
+  const todayEstimatedRevenue =
+    todayPatientCount * Number(doctor?.consultationFee || 0);
+
+  // Today's queue includes confirmed and completed appointments for this doctor only.
+  const todayQueueAppointments = appointments
+    .filter((appointment) => {
+      const isQueueDateToday =
+        (appointment.queueDate && appointment.queueDate === todayDateKey) ||
+        getIndiaDateKey(appointment.appointmentAt) === todayDateKey;
+
+      return (
+        isQueueDateToday &&
+        appointment.tokenNumber != null &&
+        ["confirmed", "completed"].includes(appointment.status)
+      );
+    })
+    .sort((a, b) => Number(a.tokenNumber) - Number(b.tokenNumber));
+
+  const waitingQueueCount = todayQueueAppointments.filter(
+    (appointment) =>
+      appointment.status === "confirmed" &&
+      !["in_consultation", "completed"].includes(appointment.treatmentStatus)
+  ).length;
 
   if (loading) {
     return (
@@ -444,6 +536,14 @@ export default function DoctorDashboard() {
 
             <div className="dd-appointment-info">
               <h3>{getPatientName(appointment)}</h3>
+
+              {["confirmed", "completed"].includes(appointment.status) &&
+                appointment.tokenNumber != null && (
+                  <p className="dd-token-number">
+                    <strong>Queue Token:</strong>{" "}
+                    #{String(appointment.tokenNumber).padStart(2, "0")}
+                  </p>
+                )}
 
               <p>
                 {appointment.patient?.email ||
@@ -669,6 +769,7 @@ export default function DoctorDashboard() {
               {activeView === "requests" && "Patient Requests"}
               {activeView === "patient-chat" && "Patient Chat"}
               {activeView === "appointments" && "Appointments"}
+              {activeView === "queue" && "Today Queue"}
             </h1>
 
             <p>
@@ -1010,6 +1111,83 @@ export default function DoctorDashboard() {
                       >
                         View Chat
                       </button>
+                    </article>
+                  );
+                })}
+              </div>
+            )}
+          </section>
+        )}
+
+        {activeView === "queue" && (
+          <section className="dd-panel">
+            <div className="dd-panel-heading">
+              <div>
+                <h2>Today's Patient Queue</h2>
+                <p>Only your confirmed patients for today, ordered by token number.</p>
+              </div>
+              <span className="dd-count-badge">
+                {waitingQueueCount} waiting · {todayQueueAppointments.length} total
+              </span>
+            </div>
+
+            {appointmentsLoading ? (
+              <div className="dd-empty">Today's queue is loading...</div>
+            ) : todayQueueAppointments.length === 0 ? (
+              <div className="dd-empty">
+                <div className="dd-empty-icon">☷</div>
+                <h3>No patients in today's queue</h3>
+                <p>Confirmed appointments and walk-in patients will appear here.</p>
+              </div>
+            ) : (
+              <div className="dd-queue-list">
+                {todayQueueAppointments.map((appointment) => {
+                  const treatmentStatus =
+                    appointment.treatmentStatus === "not_started" ||
+                    !appointment.treatmentStatus
+                      ? "waiting"
+                      : appointment.treatmentStatus;
+                  const isCompleted =
+                    appointment.status === "completed" ||
+                    treatmentStatus === "completed";
+                  const isInConsultation = treatmentStatus === "in_consultation";
+
+                  return (
+                    <article className="dd-queue-card" key={appointment._id}>
+                      <div className="dd-queue-token">
+                        #{String(appointment.tokenNumber).padStart(2, "0")}
+                      </div>
+                      <div className="dd-queue-patient">
+                        <h3>{getPatientName(appointment)}</h3>
+                        <p>
+                          {appointment.isWalkIn ? "Walk-in patient" : appointment.patient?.phone || appointment.patientPhone || "Phone not provided"}
+                        </p>
+                        <span className={`dd-queue-status ${isCompleted ? "completed" : isInConsultation ? "in-consultation" : "waiting"}`}>
+                          {isCompleted ? "Completed" : isInConsultation ? "In Consultation" : "Waiting"}
+                        </span>
+                      </div>
+                      <div className="dd-queue-actions">
+                        {!isCompleted && !isInConsultation && (
+                          <button
+                            type="button"
+                            className="dd-confirm-button"
+                            disabled={treatmentUpdatingId === appointment._id}
+                            onClick={() => updateTreatmentStatus(appointment._id, "in_consultation")}
+                          >
+                            {treatmentUpdatingId === appointment._id ? "Please wait..." : "Start Consultation"}
+                          </button>
+                        )}
+                        {isInConsultation && (
+                          <button
+                            type="button"
+                            className="dd-confirm-button"
+                            disabled={treatmentUpdatingId === appointment._id}
+                            onClick={() => updateTreatmentStatus(appointment._id, "completed")}
+                          >
+                            {treatmentUpdatingId === appointment._id ? "Please wait..." : "Mark Completed"}
+                          </button>
+                        )}
+                      </div>
                     </article>
                   );
                 })}

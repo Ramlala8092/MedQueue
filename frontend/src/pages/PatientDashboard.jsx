@@ -12,22 +12,29 @@ export default function PatientDashboard() {
   const [error, setError] = useState("");
 
   useEffect(() => {
+    let isMounted = true;
+    let intervalId;
+
     try {
       setUser(JSON.parse(localStorage.getItem("user") || "null"));
     } catch {
       setUser(null);
     }
 
-    async function loadAppointments() {
+    async function loadAppointments(showLoader = false) {
       const token = localStorage.getItem("token");
 
       if (!token) {
-        setError("Please login to view your appointments.");
-        setLoading(false);
+        if (isMounted) {
+          setError("Please login to view your appointments.");
+          setLoading(false);
+        }
         return;
       }
 
       try {
+        if (showLoader && isMounted) setLoading(true);
+
         const response = await fetch(`${API_BASE}/appointments/mine`, {
           headers: {
             Authorization: "Bearer " + token,
@@ -48,15 +55,24 @@ export default function PatientDashboard() {
               ? data.data
               : [];
 
-        setAppointments(list);
+        if (isMounted) {
+          setAppointments(list);
+          setError("");
+        }
       } catch (err) {
-        setError(err.message || "Something went wrong.");
+        if (isMounted) setError(err.message || "Something went wrong.");
       } finally {
-        setLoading(false);
+        if (isMounted) setLoading(false);
       }
     }
 
-    loadAppointments();
+    loadAppointments(true);
+    intervalId = window.setInterval(() => loadAppointments(false), 10000);
+
+    return () => {
+      isMounted = false;
+      window.clearInterval(intervalId);
+    };
   }, []);
 
   const pendingCount = appointments.filter(
@@ -79,6 +95,7 @@ export default function PatientDashboard() {
     if (Number.isNaN(date.getTime())) return "Not scheduled";
 
     return date.toLocaleDateString("en-IN", {
+      timeZone: "Asia/Kolkata",
       day: "numeric",
       month: "short",
       year: "numeric",
@@ -93,6 +110,7 @@ export default function PatientDashboard() {
     if (Number.isNaN(date.getTime())) return "--";
 
     return date.toLocaleTimeString("en-IN", {
+      timeZone: "Asia/Kolkata",
       hour: "2-digit",
       minute: "2-digit",
     });
@@ -107,6 +125,25 @@ export default function PatientDashboard() {
     ];
 
     return allowedStatuses.includes(status) ? status : "pending";
+  }
+
+  function getTreatmentStatusLabel(status) {
+    switch (status) {
+      case "waiting":
+        return "Waiting in Queue";
+      case "in_consultation":
+        return "Consultation in Progress";
+      case "completed":
+        return "Consultation Completed";
+      default:
+        return "Waiting for Doctor";
+    }
+  }
+
+  function getTreatmentStatusClass(status) {
+    if (status === "in_consultation") return "in-consultation";
+    if (status === "completed") return "completed";
+    return "waiting";
   }
 
   function getPreferenceLabel(preference) {
@@ -316,6 +353,28 @@ export default function PatientDashboard() {
                           ◷ {formatTime(appointment.appointmentAt)}
                         </span>
                       </div>
+
+                      {["confirmed", "completed"].includes(appointment.status) &&
+                        appointment.tokenNumber != null && (
+                          <div className="patient-queue-token">
+                            <span>Queue Token</span>
+                            <strong>
+                              #{String(appointment.tokenNumber).padStart(2, "0")}
+                            </strong>
+                          </div>
+                        )}
+
+                      {["confirmed", "completed"].includes(appointment.status) && (
+                        <div
+                          className={
+                            "patient-treatment-status " +
+                            getTreatmentStatusClass(appointment.treatmentStatus)
+                          }
+                        >
+                          <span className="treatment-status-dot" />
+                          {getTreatmentStatusLabel(appointment.treatmentStatus)}
+                        </div>
+                      )}
 
                       {appointment.reason && (
                         <p className="appointment-reason">

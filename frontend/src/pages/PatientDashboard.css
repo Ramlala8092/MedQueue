@@ -820,3 +820,58 @@
     gap: 6px;
   }
 }
+
+
+
+.patient-queue-token {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  width: fit-content;
+  margin-top: 12px;
+  padding: 9px 14px;
+  background: #eaf2ff;
+  color: #174ea6;
+  border: 1px solid #c8dcff;
+  border-radius: 9px;
+  font-size: 14px;
+}
+
+.patient-queue-token strong {
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.patient-treatment-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  margin-top: 10px;
+  padding: 7px 11px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.patient-treatment-status.waiting {
+  background: #fff4d9;
+  color: #946200;
+}
+
+.patient-treatment-status.in-consultation {
+  background: #e5f0ff;
+  color: #1755a5;
+}
+
+.patient-treatment-status.completed {
+  background: #e4f7eb;
+  color: #18733b;
+}
+
+.treatment-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+}

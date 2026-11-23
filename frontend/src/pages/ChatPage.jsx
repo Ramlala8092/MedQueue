@@ -367,9 +367,9 @@ export default function ChatPage() {
             </Link>
 
             <h1>Patient–Doctor Chat</h1>
-            <p>
+            {/* <p>
               Appointment ke baare mein secure conversation
-            </p>
+            </p> */}
           </div>
 
           <span
@@ -403,6 +403,7 @@ export default function ChatPage() {
         <VideoCall
           socket={connected ? socketRef.current : null}
           appointmentId={appointmentId}
+          userRole={user?.role}
         />
 
         {/* Existing messages remain unchanged */}

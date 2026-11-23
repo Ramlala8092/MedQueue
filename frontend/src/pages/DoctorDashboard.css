@@ -1451,3 +1451,107 @@
     flex: 1 1 auto;
   }
 }
+
+
+.dd-token-number {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+  margin: 8px 0;
+  padding: 7px 12px;
+  border-radius: 8px;
+  background: #eaf2ff;
+  color: #174ea6;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+
+/* Doctor's daily queue */
+.dd-queue-list {
+  display: grid;
+  gap: 14px;
+}
+
+.dd-queue-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  background: #fff;
+}
+
+.dd-queue-token {
+  display: grid;
+  place-items: center;
+  flex: 0 0 62px;
+  height: 62px;
+  border-radius: 12px;
+  background: #eaf2ff;
+  color: #174ea6;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.dd-queue-patient {
+  flex: 1;
+  min-width: 0;
+}
+
+.dd-queue-patient h3 {
+  margin: 0 0 5px;
+}
+
+.dd-queue-patient p {
+  margin: 0 0 8px;
+  color: #64748b;
+  overflow-wrap: anywhere;
+}
+
+.dd-queue-status {
+  display: inline-flex;
+  padding: 5px 9px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.dd-queue-status.waiting {
+  background: #fff7e6;
+  color: #9a6700;
+}
+
+.dd-queue-status.in-consultation {
+  background: #eaf2ff;
+  color: #174ea6;
+}
+
+.dd-queue-status.completed {
+  background: #e8f7ee;
+  color: #187744;
+}
+
+.dd-queue-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+@media (max-width: 640px) {
+  .dd-queue-card {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .dd-queue-actions {
+    width: 100%;
+  }
+
+  .dd-queue-actions button {
+    width: 100%;
+  }
+}
+
